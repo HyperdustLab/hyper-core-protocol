@@ -176,4 +176,10 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
         storageAddress.setString(storageAddress.genKey("serviceName", id), serviceName);
     }
+
+    function updateStatus(uint256 id, bytes1 status) public {
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        storageAddress.setBytes1(storageAddress.genKey("status", id), status);
+    }
 }

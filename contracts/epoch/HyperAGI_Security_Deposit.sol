@@ -29,6 +29,7 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
     }
 
     event eveSave(uint256 nodeId, uint256 totalSecurityAmount, uint256 amount);
+    event eveUpdateBlockchainStatus(uint256 nodeId, bytes1 status, uint256 withdrawalTime);
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
@@ -105,6 +106,10 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
         require(time == 0, "already apply");
 
         storageAddress.setUint(key, block.timestamp);
+
+        nodeMgrAddress.updateStatus(nodeId, 0x02);
+
+        emit eveUpdateBlockchainStatus(nodeId, 0x02, block.timestamp + _withdrawalInterval);
     }
 
     function cancelWithdrawal(uint256 nodeId) public {
@@ -118,6 +123,10 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
         string memory key = storageAddress.genKey("applyWithdrawal_", nodeId);
 
         storageAddress.setUint(key, 0);
+
+        nodeMgrAddress.updateStatus(nodeId, 0x01);
+
+        emit eveUpdateBlockchainStatus(nodeId, 0x01, 0);
     }
 
     function withdrawal(uint256 nodeId) public {
@@ -172,6 +181,10 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
         }
 
         transferETH(payable(incomeAddress), amount);
+
+        nodeMgrAddress.updateStatus(nodeId, 0x03);
+
+        emit eveUpdateBlockchainStatus(nodeId, 0x03, 0);
     }
 
     function getNodeSecurityDeposit(uint256 nodeId) public view returns (uint256) {
