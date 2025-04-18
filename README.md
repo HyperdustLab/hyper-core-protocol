@@ -14,10 +14,6 @@ Official Website : www.hyperagi.network
 Social media : https://linktr.ee/hyperagi 
 
 
-### MOSS Network Lightpaper（in Chinese）
-
-https://ipfs.hyperdust.io/ipfs/QmQGxiYHYLcCN4tekHvPQNhDHrV3vTcLhgAve9oBih3oZW?suffix=pdf
-
 ### Light Paper of MOSS Network:
 
 https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
