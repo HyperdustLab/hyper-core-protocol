@@ -115,6 +115,50 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveSaveAgent(sid);
     }
 
+    function mintV2(uint256 tokenId, string memory avatar, string memory nickName, string memory personalization, string memory welcomeMessage) public {
+        revert("not supported");
+    }
+
+    function mintV3(uint256 tokenId, string[] memory strParams) public {
+        require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
+
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+
+        require(storageAddress.getUint(tokenId.toString()) == 0, "already minted");
+
+        storageAddress.setUint(tokenId.toString(), 1);
+
+        uint256 id = storageAddress.getNextId();
+
+        bytes32 sid = generateUniqueHash(id);
+        storageAddress.setBytes32Uint(sid, id);
+
+        storageAddress.setUint(storageAddress.genKey("tokenId", id), tokenId);
+
+        storageAddress.setString(storageAddress.genKey("avatar", id), strParams[0]);
+
+        storageAddress.setString(storageAddress.genKey("nickName", id), strParams[1]);
+        storageAddress.setString(storageAddress.genKey("personalization", id), strParams[2]);
+        storageAddress.setString(storageAddress.genKey("welcomeMessage", id), strParams[3]);
+
+        storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
+
+        if (!storageAddress.getBool(msg.sender.toHexString())) {
+            storageAddress.setBool(msg.sender.toHexString(), true);
+            uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
+
+            emit eveAgentAccount(msg.sender, index);
+        }
+
+        storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), 5);
+
+        storageAddress.setUint(string(abi.encodePacked("groundRodLevel", "_", msg.sender.toHexString())), 5);
+        emit eveAccountRechargeEnergy(msg.sender, 5);
+        emit eveRechargeEnergy(sid, 1);
+
+        emit eveSaveAgent(sid);
+    }
+
     function update(bytes32 sid, string memory avatar, string memory nickName, string memory personalization) public {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
@@ -142,13 +186,15 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     }
 
     function updateV2(bytes32 sid, string memory avatar, string memory nickName, string memory personalization, string memory welcomeMessage) public {
+        revert("not supported");
+    }
+
+    function updateV3(bytes32 sid, string[] memory strParams) public {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
         uint256 id = storageAddress.getBytes32Uint(sid);
-        update(sid, avatar, nickName, personalization);
+        update(sid, strParams[0], strParams[1], strParams[2]);
 
-        storageAddress.setString(storageAddress.genKey("welcomeMessage", id), welcomeMessage);
-
-        emit eveSaveAgent(sid);
+        storageAddress.setString(storageAddress.genKey("welcomeMessage", id), strParams[3]);
     }
 
     function getAgent(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, uint256) {
