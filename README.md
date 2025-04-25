@@ -1,6 +1,6 @@
-## HyperAGI
+## MOSS Network
 
-HyperAGI (was Hyperdust) is a Layer 3 AI solution Arbitrum One, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Ethereum's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
+MOSS Network is a decentralized AI Agent hosting metwork
 
 Consumer-grade GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
 
@@ -13,19 +13,12 @@ These programmable agents are capable of issuing or owning cryptocurrency assets
 Official Website : www.hyperagi.network
 Social media : https://linktr.ee/hyperagi 
 
-The first AI Runes [HYPER•AGI•AGENT]:
-https://unisat.io/runes/market?tick=HYPER%E2%80%A2AGI%E2%80%A2AGENT
 
-
-### HyperAGI Lightpaper（in Chinese）
-
-https://ipfs.hyperdust.io/ipfs/QmQGxiYHYLcCN4tekHvPQNhDHrV3vTcLhgAve9oBih3oZW?suffix=pdf
-
-### Light Paper of HyperAGI:
+### Light Paper of MOSS Network:
 
 https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
 
-### HyperAGI Whitepaper (full version):
+### MOSS Network Whitepaper (full version):
 
 https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
 
@@ -34,9 +27,8 @@ https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRe
 https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
 
-#### HyperAGI Smart Contracts
+#### MOSS Network Smart Contracts
 
-The smart contracts of the HyperAGI are the core of the HyperAGI  platform, containing the main functionalities of the platform.
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
 
