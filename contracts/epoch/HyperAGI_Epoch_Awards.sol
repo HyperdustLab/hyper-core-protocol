@@ -105,7 +105,7 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
 
         address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();
 
-        uint256 epochAward = GPUMiningAddress._epochAward();
+        uint256 epochAward = GPUMiningAddress.getEpochAward();
 
         if (_totalNum < 10) {
             _totalNum = 20;
@@ -134,6 +134,8 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
         uint256 difficulty = (_totalNum * accuracy) / _activeNum;
 
         uint256 actualEpochAward = (epochAward * accuracy) / difficulty;
+
+        require(epochAward >= actualEpochAward, string(abi.encodePacked("epochAward (", epochAward.toString(), ") is not enough for mintNum (", actualEpochAward.toString(), "), totalNum: ", _totalNum.toString(), ", activeNum: ", _activeNum.toString())));
 
         uint256 securityDeposit = actualEpochAward / 10;
         uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit - gasFee;

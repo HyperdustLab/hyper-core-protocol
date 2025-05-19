@@ -119,7 +119,7 @@ contract HyperAGI_AgentWallet is OwnableUpgradeable, AccessControlUpgradeable {
 
         require(_GPUMiningTotalAward - _GPUMiningCurrAward - mintNum >= 0, "GPUMiningTotalAward is not enough");
 
-        require(_epochAward >= mintNum, "epochAward is not enough");
+        require(_epochAward >= mintNum, string(abi.encodePacked("epochAward (", _epochAward.toString(), ") is not enough for mintNum (", mintNum.toString(), ")")));
 
         _GPUMiningCurrYearTotalAward += mintNum;
         _GPUMiningCurrAward += mintNum;

@@ -119,7 +119,7 @@ contract HyperAGI_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
 
         require(_GPUMiningTotalAward - _GPUMiningCurrAward - mintNum >= 0, "GPUMiningTotalAward is not enough");
 
-        require(_epochAward >= mintNum, "epochAward is not enough");
+        require(_epochAward >= mintNum, string(abi.encodePacked("epochAward (", _epochAward.toString(), ") is not enough for mintNum (", mintNum.toString(), ")")));
 
         _GPUMiningCurrYearTotalAward += mintNum;
         _GPUMiningCurrAward += mintNum;
@@ -150,5 +150,26 @@ contract HyperAGI_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
 
         _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
         _GPUMiningRateInterval = 4 * _GPUMiningReleaseInterval;
+    }
+
+    function getEpochAward() public view returns (uint256) {
+        uint256 GPUMiningCurrMiningRatio = _GPUMiningCurrMiningRatio;
+        uint256 GPUMiningCurrYearTotalSupply = _GPUMiningCurrYearTotalSupply;
+        uint256 epochAward = _epochAward;
+
+        if (block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval) {
+            GPUMiningCurrMiningRatio = GPUMiningCurrMiningRatio / 2;
+            require(GPUMiningCurrMiningRatio > 0, "currMiningRatio is 0");
+
+            GPUMiningCurrYearTotalSupply = Math.mulDiv(_GPUMiningTotalAward - _GPUMiningCurrAward, GPUMiningCurrMiningRatio, FACTOR);
+            epochAward = GPUMiningCurrYearTotalSupply / 365 / 225;
+        }
+
+        if (block.timestamp >= _GPUMiningAllowReleaseTime + _GPUMiningReleaseInterval) {
+            GPUMiningCurrYearTotalSupply = Math.mulDiv(_GPUMiningTotalAward - _GPUMiningCurrAward, GPUMiningCurrMiningRatio, FACTOR);
+            epochAward = GPUMiningCurrYearTotalSupply / 365 / 225;
+        }
+
+        return epochAward;
     }
 }
