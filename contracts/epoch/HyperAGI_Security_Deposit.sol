@@ -136,7 +136,7 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
 
         (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
-        require(incomeAddress == msg.sender, "not income address");
+        require(incomeAddress == msg.sender || HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not income address");
 
         uint256 amount = storageAddress.getUint(nodeId.toString());
 
@@ -161,7 +161,7 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
         storageAddress.setUint(incomeAddressKey, incomeAddressAmount);
 
         if (incomeAddressAmount == 0) {
-            uint256 incomeAddressListTotal = storageAddress.getUint("incomeAddressListTotal");
+            uint256 incomeAddressListTotal = storageAddress.getAddressArray("incomeAddressList").length;
 
             incomeAddressListTotal--;
 
@@ -169,9 +169,9 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
 
             uint256 incomeAddressIndex = storageAddress.getUint(incomeAddressIndexKey);
 
-            storageAddress.removeAddressArray("incomeAddressList", incomeAddressIndex);
+            if (incomeAddressListTotal > 0 && incomeAddressIndex < incomeAddressListTotal) {
+                storageAddress.removeAddressArray("incomeAddressList", incomeAddressIndex);
 
-            if (incomeAddressListTotal > 0 || incomeAddressIndex != incomeAddressListTotal) {
                 address newAddress = storageAddress.getAddressArray("incomeAddressList")[incomeAddressIndex];
 
                 storageAddress.setAddress(incomeAddressIndexKey, newAddress);
