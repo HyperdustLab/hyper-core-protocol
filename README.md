@@ -1,6 +1,6 @@
-## MOSS Network
+## Hyper Network
 
-MOSS Network is a decentralized AI Agent hosting metwork
+Hyper Network is a decentralized AI Agent hosting metwork
 
 Consumer-grade GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
 
@@ -14,11 +14,11 @@ Official Website : www.hyperagi.network
 Social media : https://linktr.ee/hyperagi 
 
 
-### Light Paper of MOSS Network:
+### Light Paper of Hyper Network:
 
 https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
 
-### MOSS Network Whitepaper (full version):
+### Hyper Network Whitepaper (full version):
 
 https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
 
@@ -27,7 +27,7 @@ https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRe
 https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
 
-#### MOSS Network Smart Contracts
+#### Hyper Network Smart Contracts
 
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
