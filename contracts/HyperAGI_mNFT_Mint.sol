@@ -126,7 +126,8 @@ contract HyperAGI_mNFT_Mint is OwnableUpgradeable {
         string memory tokenURI = storageAddress.getString(storageAddress.genKey("tokenURI", id));
         if (contractType == 0x11) {
             for (uint i = 0; i < num; i++) {
-                ERC721(contractAddress).safeMint(msg.sender, tokenURI);
+                uint256 newTokenId = ERC721(contractAddress).safeMint(msg.sender, tokenURI);
+                require(newTokenId > 0, "Failed to mint NFT");
             }
         } else if (contractType == 0x22) {
             ERC1155(contractAddress).mint(msg.sender, tokenId, num, tokenURI, "");
@@ -136,6 +137,64 @@ contract HyperAGI_mNFT_Mint is OwnableUpgradeable {
         storageAddress.setUint(storageAddress.genKey("mintNum", id), mintNum + num);
         emit eveSave(id);
         emit eveMint(id, msg.sender, num, price, payAmount, gasFee);
+    }
+
+    function mintWithReturnTokenId(uint256 id, uint256 num) public payable returns (uint256[] memory) {}
+
+    function mintWithReturnTokenIdV2(uint256 id, uint256 num, address to) public payable returns (uint256[] memory) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
+        address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();
+        require(_GasFeeCollectionWallet != address(0), "not set GasFeeCollectionWallet");
+        uint256 del = storageAddress.getUint(storageAddress.genKey("del", id));
+        require(del == 0, "not found");
+        uint256 price = storageAddress.getUint(storageAddress.genKey("price", id));
+        uint256 gasFee = HyperAGI_Transaction_Cfg(_transactionCfgAddress).getGasFee("mint_mNFT");
+        uint256 allowNum = storageAddress.getUint(storageAddress.genKey("allowNum", id));
+        uint256 payAmount = price * num + gasFee;
+        require(msg.value == payAmount, "Wrong payment amount");
+        uint256 mintNum = storageAddress.getUint(storageAddress.genKey("mintNum", id));
+        require(allowNum >= mintNum + num, "Insufficient inventory");
+        uint256 allowBuyNum = storageAddress.getUint(storageAddress.genKey("allowBuyNum", id));
+        if (allowBuyNum > 0) {
+            string memory buyNumKey = string(abi.encode(id.toString(), msg.sender.toHexString()));
+            uint256 buyNum = storageAddress.getUint(buyNumKey);
+            require(buyNum + num <= allowBuyNum, "exceeds the purchase limit");
+            storageAddress.setUint(buyNumKey, buyNum + num);
+        }
+
+        transferETH(payable(_GasFeeCollectionWallet), payAmount);
+        walletAccountAddress.addAmount(payAmount);
+        bytes1 contractType = storageAddress.getBytes1(storageAddress.genKey("contractType", id));
+        address contractAddress = storageAddress.getAddress(storageAddress.genKey("contractAddress", id));
+        uint256 tokenId = storageAddress.getUint(storageAddress.genKey("tokenId", id));
+        string memory tokenURI = storageAddress.getString(storageAddress.genKey("tokenURI", id));
+
+        uint256[] memory mintedTokenIds = new uint256[](num);
+
+        if (contractType == 0x11) {
+            for (uint i = 0; i < num; i++) {
+                uint256 newTokenId = ERC721(contractAddress).safeMint(to, tokenURI);
+
+                require(newTokenId > 0, "Failed to mint NFT");
+
+                mintedTokenIds[i] = newTokenId;
+            }
+        } else if (contractType == 0x22) {
+            ERC1155(contractAddress).mint(to, tokenId, num, tokenURI, "");
+
+            for (uint i = 0; i < num; i++) {
+                mintedTokenIds[i] = tokenId;
+            }
+        } else {
+            revert("invalid contract type");
+        }
+
+        storageAddress.setUint(storageAddress.genKey("mintNum", id), mintNum + num);
+        emit eveSave(id);
+        emit eveMint(id, to, num, price, payAmount, gasFee);
+
+        return mintedTokenIds;
     }
 
     function updateNFT(uint256 id, string memory tokenURI, uint256 price, address contractAddress, uint256 tokenId, bytes1 contractType, uint256 allowNum, uint256 allowBuyNum) public {

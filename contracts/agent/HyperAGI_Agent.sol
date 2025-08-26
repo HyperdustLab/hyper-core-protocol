@@ -120,7 +120,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     }
 
     function mintV3(uint256 tokenId, string[] memory strParams) public {
-        require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
+        // require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
 
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
@@ -153,7 +153,9 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), 5);
 
         storageAddress.setUint(string(abi.encodePacked("groundRodLevel", "_", msg.sender.toHexString())), 5);
+
         emit eveAccountRechargeEnergy(msg.sender, 5);
+
         emit eveRechargeEnergy(sid, 1);
 
         emit eveSaveAgent(sid);

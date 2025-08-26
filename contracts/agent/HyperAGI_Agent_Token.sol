@@ -29,6 +29,7 @@ contract HyperAGI_Agent_Token is Initializable, ERC721Upgradeable, ERC721URIStor
         _tokenIdCounter++;
         uint256 tokenId = _tokenIdCounter;
         _safeMint(to, tokenId);
+
         _setTokenURI(tokenId, uri);
 
         return tokenId;
