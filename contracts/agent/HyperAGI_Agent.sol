@@ -32,10 +32,28 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     uint256[] private groundRodLevelKeys;
     mapping(uint256 => uint256) public _groundRodLevels;
 
+    // 钱包地址库相关变量
+    address[] public walletAddressPool;
+    mapping(address => bool) public allocatedWallets;
+    mapping(address => bool) public walletInPool;
+    uint256 public nextWalletIndex;
+    uint256 public defaultTransferAmount = 1 ether; // 默认转账金额1 ETH
+
     event eveSaveAgent(bytes32 sid);
     event eveRechargeEnergy(bytes32 sid, uint256 groundRodLevelId);
     event eveAccountRechargeEnergy(address account, uint256 groundRodLevelId);
     event eveAgentAccount(address account, uint256 index);
+    event eveWalletAllocated(bytes32 sid, address walletAddress, uint256 transferAmount);
+    event eveWalletAdded(address walletAddress);
+    event eveTransferAmountUpdated(uint256 newAmount);
+
+    // 管理员角色检查修饰符
+    modifier onlyAdmin() {
+        require(_rolesCfgAddress != address(0), "roles config not set");
+        HyperAGI_Roles_Cfg rolesCfg = HyperAGI_Roles_Cfg(_rolesCfgAddress);
+        require(rolesCfg.hasAdminRole(msg.sender) || msg.sender == owner(), "not admin role");
+        _;
+    }
 
     function initialize(address onlyOwner) public initializer {
         __Ownable_init(onlyOwner);
@@ -62,6 +80,10 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         _storageAddress = contractaddressArray[1];
         _agentPOPNFTAddress = contractaddressArray[2];
         _groundRodAddress = contractaddressArray[3];
+        
+        // 设置Storage合约的serviceAddress为当前Agent合约
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        storageAddress.setServiceAddress(address(this));
     }
 
     function setGroundRodLevels(uint256[] memory tokenIds, uint256[] memory levels) public onlyOwner {
@@ -74,6 +96,58 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         for (uint i = 0; i < tokenIds.length; i++) {
             _groundRodLevels[tokenIds[i]] = levels[i];
         }
+    }
+
+    // 添加钱包地址到地址库（仅管理员）
+    function addWalletToPool(address[] memory walletAddresses) public onlyAdmin {
+        for (uint i = 0; i < walletAddresses.length; i++) {
+            address wallet = walletAddresses[i];
+            require(wallet != address(0), "invalid wallet address");
+            require(!walletInPool[wallet], "wallet already in pool");
+            require(!allocatedWallets[wallet], "wallet already allocated");
+            
+            walletAddressPool.push(wallet);
+            walletInPool[wallet] = true;
+            
+            emit eveWalletAdded(wallet);
+        }
+    }
+
+    // 设置默认转账金额（仅管理员）
+    function setDefaultTransferAmount(uint256 amount) public onlyAdmin {
+        defaultTransferAmount = amount;
+        emit eveTransferAmountUpdated(amount);
+    }
+
+    // 获取下一个可用的钱包地址
+    function getNextAvailableWallet() private returns (address) {
+        require(walletAddressPool.length > 0, "no wallets in pool");
+        require(nextWalletIndex < walletAddressPool.length, "no available wallets");
+        
+        address wallet = walletAddressPool[nextWalletIndex];
+        require(!allocatedWallets[wallet], "wallet already allocated");
+        
+        allocatedWallets[wallet] = true;
+        nextWalletIndex++;
+        
+        return wallet;
+    }
+
+    // 检查钱包地址库状态
+    function getWalletPoolInfo() public view returns (uint256 totalWallets, uint256 allocatedWallets, uint256 availableWallets) {
+        totalWallets = walletAddressPool.length;
+        allocatedWallets = nextWalletIndex;
+        availableWallets = totalWallets - allocatedWallets;
+    }
+
+    // 获取钱包地址库中的所有地址
+    function getWalletPool() public view returns (address[] memory) {
+        return walletAddressPool;
+    }
+
+    // 检查钱包是否已分配
+    function isWalletAllocated(address wallet) public view returns (bool) {
+        return allocatedWallets[wallet];
     }
 
     function mint(uint256 tokenId, string memory avatar, string memory nickName, string memory personalization) public {
@@ -119,7 +193,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         revert("not supported");
     }
 
-    function mintV3(uint256 tokenId, string[] memory strParams) public {
+    function mintV3(uint256 tokenId, string[] memory strParams) public payable {
         // require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
 
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
@@ -143,6 +217,10 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
 
+        // 分配钱包地址
+        address allocatedWallet = getNextAvailableWallet();
+        storageAddress.setAddress(storageAddress.genKey("walletAddress", id), allocatedWallet);
+
         if (!storageAddress.getBool(msg.sender.toHexString())) {
             storageAddress.setBool(msg.sender.toHexString(), true);
             uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
@@ -157,6 +235,13 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveAccountRechargeEnergy(msg.sender, 5);
 
         emit eveRechargeEnergy(sid, 1);
+
+        // 向分配的钱包地址转账
+        if (address(this).balance >= defaultTransferAmount) {
+            (bool success, ) = allocatedWallet.call{value: defaultTransferAmount}("");
+            require(success, "transfer failed");
+            emit eveWalletAllocated(sid, allocatedWallet, defaultTransferAmount);
+        }
 
         emit eveSaveAgent(sid);
     }
@@ -232,6 +317,34 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         );
     }
 
+
+    function getAgentWallet(bytes32 sid) public view returns (address) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        uint256 id = storageAddress.getBytes32Uint(sid);
+        require(id > 0, "not found");
+        
+        return storageAddress.getAddress(storageAddress.genKey("walletAddress", id));
+    }
+
+
+    function getAgentV3(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, string memory, uint256, address) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+
+        uint256 id = storageAddress.getBytes32Uint(sid);
+
+        require(id > 0, "not found");
+
+        return (
+            storageAddress.getUint(storageAddress.genKey("tokenId", id)),
+            storageAddress.getString(storageAddress.genKey("avatar", id)),
+            storageAddress.getString(storageAddress.genKey("nickName", id)),
+            storageAddress.getString(storageAddress.genKey("personalization", id)),
+            storageAddress.getString(storageAddress.genKey("welcomeMessage", id)),
+            storageAddress.getUint(storageAddress.genKey("groundRodLevel", id)),
+            storageAddress.getAddress(storageAddress.genKey("walletAddress", id))
+        );
+    }
+
     function rechargeEnergy(uint256 tokenId, bytes32 sid) public {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
@@ -282,4 +395,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         return storageAddress.getUint(key);
     }
+
+    // 允许合约接收ETH
+    receive() external payable {}
 }
