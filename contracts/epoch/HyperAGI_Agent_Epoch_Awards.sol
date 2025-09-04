@@ -93,7 +93,7 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
         HyperAGI_AgentWallet agentWalletAddress = HyperAGI_AgentWallet(payable(_agentWalletAddress));
         HyperAGI_BaseReward_Release baseRewardReleaseAddress = HyperAGI_BaseReward_Release(payable(_baseRewardReleaseAddress));
         HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
-        HyperAGI_Agent agentAddress = HyperAGI_Agent(_agentAddress);
+        HyperAGI_Agent agentAddress = HyperAGI_Agent(payable(_agentAddress));
 
         address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();
 
@@ -139,7 +139,7 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
     }
 
     function countActiveAgent(bytes32[] memory agentStatus) private view returns (address[] memory, uint256, uint256) {
-        HyperAGI_Agent agentAddress = HyperAGI_Agent(_agentAddress);
+        HyperAGI_Agent agentAddress = HyperAGI_Agent(payable(_agentAddress));
 
         uint256 totalSize = agentAddress.getAgentAccountLen();
 

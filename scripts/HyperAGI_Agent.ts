@@ -10,17 +10,33 @@ async function main() {
   console.info('HyperAGI_Storage:', HyperAGI_Storage.target)
 
   const contract = await ethers.getContractFactory('HyperAGI_Agent')
+
+  console.info('getContractFactory')
+
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
+
+  console.info('deployProxy')
 
   await instance.waitForDeployment()
 
+  console.info('waitForDeployment')
+
   await (await HyperAGI_Storage.setServiceAddress(instance.target)).wait()
+
+  console.info('setServiceAddress')
 
   await (await instance.setContractAddress(['0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea', HyperAGI_Storage.target, '0x709722ed57452a5B25860e4C8D1F7BB5275ac00B', '0x615f77318Ff5C101ff513e673c937C71ffDed5B3'])).wait()
 
+  console.info('contractFactory address:', instance.target)
+
   // await (await instance.setGroundRodLevels([1720753076763, 1720753124865, 1720753540303, 1720753582471, 1720753602937], [1, 2, 3, 4, 5])).wait()
 
-  console.info('contractFactory address:', instance.target)
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress(instance.target)
+
+  await run('verify:verify', {
+    address: implementationAddress,
+    constructorArguments: [],
+  })
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

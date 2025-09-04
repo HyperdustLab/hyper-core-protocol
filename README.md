@@ -11,8 +11,7 @@ These programmable agents are capable of issuing or owning cryptocurrency assets
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
 Official Website : www.hyperagi.network
-Social media : https://linktr.ee/hyperagi 
-
+Social media : https://linktr.ee/hyperagi
 
 ### Light Paper of Hyper Network:
 
@@ -26,9 +25,7 @@ https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRe
 
 https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
-
 #### Hyper Network Smart Contracts
-
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
 
@@ -62,8 +59,4 @@ https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=shari
 
 - `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information.
 
-
-
 [![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/YZRhmqcBAcs)
-
-

@@ -24,6 +24,12 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
+    // Time period structure
+    struct TimePeriod {
+        uint256 startTime;  // Start time (timestamp)
+        uint256 endTime;    // End time (timestamp)
+    }
+
     address public _rolesCfgAddress;
     address public _storageAddress;
     address public _agentPOPNFTAddress;
@@ -32,12 +38,12 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     uint256[] private groundRodLevelKeys;
     mapping(uint256 => uint256) public _groundRodLevels;
 
-    // 钱包地址库相关变量
+    // Wallet address pool related variables
     address[] public walletAddressPool;
     mapping(address => bool) public allocatedWallets;
     mapping(address => bool) public walletInPool;
     uint256 public nextWalletIndex;
-    uint256 public defaultTransferAmount = 1 ether; // 默认转账金额1 ETH
+    uint256 public defaultTransferAmount ; // Default transfer amount 1 ETH
 
     event eveSaveAgent(bytes32 sid);
     event eveRechargeEnergy(bytes32 sid, uint256 groundRodLevelId);
@@ -46,8 +52,9 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     event eveWalletAllocated(bytes32 sid, address walletAddress, uint256 transferAmount);
     event eveWalletAdded(address walletAddress);
     event eveTransferAmountUpdated(uint256 newAmount);
+    event eveTimePeriodUpdated(bytes32 sid, uint256 startTime, uint256 endTime);
 
-    // 管理员角色检查修饰符
+    // Admin role check modifier
     modifier onlyAdmin() {
         require(_rolesCfgAddress != address(0), "roles config not set");
         HyperAGI_Roles_Cfg rolesCfg = HyperAGI_Roles_Cfg(_rolesCfgAddress);
@@ -80,10 +87,6 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         _storageAddress = contractaddressArray[1];
         _agentPOPNFTAddress = contractaddressArray[2];
         _groundRodAddress = contractaddressArray[3];
-        
-        // 设置Storage合约的serviceAddress为当前Agent合约
-        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
-        storageAddress.setServiceAddress(address(this));
     }
 
     function setGroundRodLevels(uint256[] memory tokenIds, uint256[] memory levels) public onlyOwner {
@@ -98,7 +101,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         }
     }
 
-    // 添加钱包地址到地址库（仅管理员）
+    // Add wallet addresses to address pool (admin only)
     function addWalletToPool(address[] memory walletAddresses) public onlyAdmin {
         for (uint i = 0; i < walletAddresses.length; i++) {
             address wallet = walletAddresses[i];
@@ -113,13 +116,13 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         }
     }
 
-    // 设置默认转账金额（仅管理员）
+    // Set default transfer amount (admin only)
     function setDefaultTransferAmount(uint256 amount) public onlyAdmin {
         defaultTransferAmount = amount;
         emit eveTransferAmountUpdated(amount);
     }
 
-    // 获取下一个可用的钱包地址
+    // Get next available wallet address
     function getNextAvailableWallet() private returns (address) {
         require(walletAddressPool.length > 0, "no wallets in pool");
         require(nextWalletIndex < walletAddressPool.length, "no available wallets");
@@ -133,19 +136,19 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         return wallet;
     }
 
-    // 检查钱包地址库状态
+    // Check wallet address pool status
     function getWalletPoolInfo() public view returns (uint256 totalWallets, uint256 allocatedWallets, uint256 availableWallets) {
         totalWallets = walletAddressPool.length;
         allocatedWallets = nextWalletIndex;
         availableWallets = totalWallets - allocatedWallets;
     }
 
-    // 获取钱包地址库中的所有地址
+    // Get all addresses in wallet address pool
     function getWalletPool() public view returns (address[] memory) {
         return walletAddressPool;
     }
 
-    // 检查钱包是否已分配
+    // Check if wallet is allocated
     function isWalletAllocated(address wallet) public view returns (bool) {
         return allocatedWallets[wallet];
     }
@@ -217,7 +220,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
 
-        // 分配钱包地址
+        // Allocate wallet address
         address allocatedWallet = getNextAvailableWallet();
         storageAddress.setAddress(storageAddress.genKey("walletAddress", id), allocatedWallet);
 
@@ -232,11 +235,17 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setUint(string(abi.encodePacked("groundRodLevel", "_", msg.sender.toHexString())), 5);
 
+        // Set default time period (current time to 6.4 minutes later)
+        uint256 currentTime = block.timestamp;
+        uint256 defaultEndTime = currentTime + 384; // Default 6.4 minutes validity period (384 seconds)
+        storageAddress.setUint(storageAddress.genKey("timePeriodStart", id), currentTime);
+        storageAddress.setUint(storageAddress.genKey("timePeriodEnd", id), defaultEndTime);
+
         emit eveAccountRechargeEnergy(msg.sender, 5);
 
         emit eveRechargeEnergy(sid, 1);
 
-        // 向分配的钱包地址转账
+        // Transfer to allocated wallet address
         if (address(this).balance >= defaultTransferAmount) {
             (bool success, ) = allocatedWallet.call{value: defaultTransferAmount}("");
             require(success, "transfer failed");
@@ -327,7 +336,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     }
 
 
-    function getAgentV3(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, string memory, uint256, address) {
+    function getAgentV3(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, string memory, uint256, address, uint256, uint256) {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         uint256 id = storageAddress.getBytes32Uint(sid);
@@ -341,7 +350,9 @@ contract HyperAGI_Agent is OwnableUpgradeable {
             storageAddress.getString(storageAddress.genKey("personalization", id)),
             storageAddress.getString(storageAddress.genKey("welcomeMessage", id)),
             storageAddress.getUint(storageAddress.genKey("groundRodLevel", id)),
-            storageAddress.getAddress(storageAddress.genKey("walletAddress", id))
+            storageAddress.getAddress(storageAddress.genKey("walletAddress", id)),
+            storageAddress.getUint(storageAddress.genKey("timePeriodStart", id)),
+            storageAddress.getUint(storageAddress.genKey("timePeriodEnd", id))
         );
     }
 
@@ -396,6 +407,38 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         return storageAddress.getUint(key);
     }
 
-    // 允许合约接收ETH
+    // Admin modify agent's time period
+    function updateAgentTimePeriod(bytes32 sid, uint256 startTime, uint256 endTime) public onlyAdmin {
+        require(startTime < endTime, "start time must be before end time");
+        require(endTime > block.timestamp, "end time must be in the future");
+
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        uint256 id = storageAddress.getBytes32Uint(sid);
+        require(id > 0, "agent not found");
+
+        storageAddress.setUint(storageAddress.genKey("timePeriodStart", id), startTime);
+        storageAddress.setUint(storageAddress.genKey("timePeriodEnd", id), endTime);
+
+        emit eveTimePeriodUpdated(sid, startTime, endTime);
+    }
+
+    // Get agent's time period information
+    function getAgentTimePeriod(bytes32 sid) public view returns (uint256 startTime, uint256 endTime) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        uint256 id = storageAddress.getBytes32Uint(sid);
+        require(id > 0, "agent not found");
+
+        startTime = storageAddress.getUint(storageAddress.genKey("timePeriodStart", id));
+        endTime = storageAddress.getUint(storageAddress.genKey("timePeriodEnd", id));
+    }
+
+    // Check if agent is within valid time period
+    function isAgentActive(bytes32 sid) public view returns (bool) {
+        (uint256 startTime, uint256 endTime) = getAgentTimePeriod(sid);
+        uint256 currentTime = block.timestamp;
+        return currentTime >= startTime && currentTime <= endTime;
+    }
+
+    // Allow contract to receive ETH
     receive() external payable {}
 }
