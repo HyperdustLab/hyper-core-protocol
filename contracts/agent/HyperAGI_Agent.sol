@@ -1,3 +1,17 @@
+
+// SPDX-License-Identifier: UNLICENSED
+/**
+ * ONLY FOR TEST PURPOSE, NOT FOR PRODUCTION！！
+ * 
+ * @title HyperAGI_Agent
+ * @dev This is an upgradeable contract for managing AI agents in the HyperAGI ecosystem
+ * Features include agent minting, wallet allocation, energy recharge, and time period management
+ * Agents are created from POP NFTs and assigned unique wallet addresses from a pool
+ * 
+ * @dev Upgrade History:
+ * - 2025-09-05: Added wallet address allocation functionality in mint methods
+ */
+
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -175,6 +189,11 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         storageAddress.setString(storageAddress.genKey("personalization", id), personalization);
 
         storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
+
+
+        address allocatedWallet = getNextAvailableWallet();
+        storageAddress.setAddress(storageAddress.genKey("walletAddress", id), allocatedWallet);
+
 
         if (!storageAddress.getBool(msg.sender.toHexString())) {
             storageAddress.setBool(msg.sender.toHexString(), true);
