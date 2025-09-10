@@ -5,6 +5,13 @@
  * @title HyperAGI_Agent_Epoch_Payment
  * @dev This is an upgradeable contract for handling agent epoch fee payments
  * After successful payment, it automatically updates the agent's time period
+ * 
+ * @dev Upgrade History:
+ * - 2025-09-08: Implemented dynamic gas fee calculation based on agent statistics
+ *               Added formula: Gas Fee = Base / Difficulty / Factor * Base
+ *               Base = 38000, Difficulty = Total agents / Online agents, Factor = Online agents * 300,000,000
+ *               Added getAgentStatistics() and calculateGasFee() functions
+ *               Updated payment functions to use dynamic fee calculation instead of fixed 0.001 ETH
  */
 pragma solidity ^0.8.0;
 
@@ -16,6 +23,9 @@ import "../HyperAGI_Roles_Cfg.sol";
 // Define interface to avoid type conversion issues
 interface IHyperAGI_Agent {
     function updateAgentTimePeriod(bytes32 sid, uint256 startTime, uint256 endTime) external;
+    function getAgentAccountLen() external view returns (uint256);
+    function getTotalCount() external view returns (uint256);
+    function getOnlineCount() external view returns (uint256);
 }
 
 contract HyperAGI_Agent_Epoch_Payment is OwnableUpgradeable {
@@ -62,11 +72,69 @@ contract HyperAGI_Agent_Epoch_Payment is OwnableUpgradeable {
         _agentAddress = agentAddress;
     }
     
+    
     // Batch set contract addresses
     function setContractAddress(address[] memory contractAddressArray) public onlyOwner {
         require(contractAddressArray.length >= 2, "invalid array length");
         _rolesCfgAddress = contractAddressArray[0];
         _agentAddress = contractAddressArray[1];
+    }
+    
+    /**
+     * @dev Get agent statistics (total agents and online agents)
+     * @return totalAgents total number of agents
+     * @return onlineAgents number of online agents
+     */
+    function getAgentStatistics() public view returns (uint256 totalAgents, uint256 onlineAgents) {
+        if (_agentAddress == address(0)) {
+            return (0, 0);
+        }
+        
+        IHyperAGI_Agent agentContract = IHyperAGI_Agent(_agentAddress);
+        totalAgents = agentContract.getTotalCount();
+        onlineAgents = agentContract.getOnlineCount();
+        
+        return (totalAgents, onlineAgents);
+    }
+    
+    /**
+     * @dev Calculate gas fee based on new formula
+     * Formula: Gas Fee = Base / (Difficulty * Factor)
+     * Base = 38000 (fixed)
+     * Difficulty = Total agents / Online agents
+     * Factor = Online agents * 300,000,000
+     * @return calculated gas fee
+     */
+    function calculateGasFee() public view returns (uint256) {
+        (uint256 totalAgents, uint256 onlineAgents) = getAgentStatistics();
+        
+        if (onlineAgents == 0) {
+            return 0; // No fee when no agents online
+        }
+        
+        // Ensure minimum agent count
+        if (totalAgents < 1) {
+            totalAgents = 1;
+        }
+        
+        // Correct formula: Gas Fee = Base / (Difficulty * Factor)
+        // Base = 38000 (fixed number)
+        // Difficulty = Total agents / Online agents
+        // Factor = Online agents * 300,000,000
+        
+        uint256 base = 38000;
+        uint256 difficulty = (totalAgents * 1e18) / onlineAgents; // Use 1e18 precision
+        uint256 factor = onlineAgents * 300000000;
+        
+        // Calculate: Base / (Difficulty * Factor)
+        // To avoid precision issues, first calculate Difficulty * Factor, then divide Base by the result
+        uint256 difficultyTimesFactor = (difficulty * factor) / 1e18; // Remove precision from difficulty
+        uint256 result = (base * 1e18) / difficultyTimesFactor;
+        
+        // Convert result to wei (1e18 wei = 1 ETH)
+        uint256 gasFeeInWei = result;
+        
+        return gasFeeInWei;
     }
     
     /**
@@ -76,8 +144,8 @@ contract HyperAGI_Agent_Epoch_Payment is OwnableUpgradeable {
     function payEpochFee(bytes32 sid) public payable {
         require(_agentAddress != address(0), "agent contract not set");
         
-        // Fixed payment amount: 0.001 ETH
-        uint256 paymentAmount = 0.001 ether;
+        // Calculate dynamic payment amount based on new formula
+        uint256 paymentAmount = calculateGasFee();
         require(msg.value == paymentAmount, "incorrect payment amount");
         
         // Get current timestamp
@@ -115,8 +183,8 @@ contract HyperAGI_Agent_Epoch_Payment is OwnableUpgradeable {
      * @dev Get current epoch payment amount
      * @return current epoch payment amount (in wei)
      */
-    function getEpochPaymentAmount() public pure returns (uint256) {
-        return 0.001 ether;
+    function getEpochPaymentAmount() public view returns (uint256) {
+        return calculateGasFee();
     }
     
     /**

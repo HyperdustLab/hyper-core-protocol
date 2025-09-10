@@ -1,163 +1,176 @@
-# HyperAGI_Agent 钱包地址库功能说明
+# HyperAGI_Agent Wallet Address Pool Feature Description
 
-## 功能概述
+## Feature Overview
 
-HyperAGI_Agent合约已新增钱包地址库功能，支持为每个Agent自动分配唯一的钱包地址，并在分配时进行ETH转账。
+HyperAGI_Agent contract has added wallet address pool functionality, supporting automatic allocation of unique wallet addresses for each Agent and ETH transfer during allocation.
 
-## 新增功能
+## New Features
 
-### 1. 钱包地址库管理
+### 1. Wallet Address Pool Management
 
-#### 添加钱包地址到地址库
+#### Add Wallet Addresses to Address Pool
+
 ```solidity
 function addWalletToPool(address[] memory walletAddresses) public onlyAdmin
 ```
-- **功能**: 向钱包地址库中添加新的钱包地址
-- **权限**: 仅管理员角色可调用
-- **参数**: `walletAddresses` - 要添加的钱包地址数组
-- **事件**: `eveWalletAdded(address walletAddress)`
 
-#### 查看钱包地址库状态
+- **Function**: Add new wallet addresses to wallet address pool
+- **Permission**: Only admin role can call
+- **Parameters**: `walletAddresses` - Array of wallet addresses to add
+- **Event**: `eveWalletAdded(address walletAddress)`
+
+#### View Wallet Address Pool Status
+
 ```solidity
 function getWalletPoolInfo() public view returns (uint256 totalWallets, uint256 allocatedWallets, uint256 availableWallets)
 ```
-- **返回值**: 
-  - `totalWallets`: 地址库中的总钱包数量
-  - `allocatedWallets`: 已分配的钱包数量
-  - `availableWallets`: 可用的钱包数量
 
-#### 获取钱包地址库
+- **Return Values**:
+  - `totalWallets`: Total wallet count in address pool
+  - `allocatedWallets`: Number of allocated wallets
+  - `availableWallets`: Number of available wallets
+
+#### Get Wallet Address Pool
+
 ```solidity
 function getWalletPool() public view returns (address[] memory)
 ```
-- **返回值**: 地址库中的所有钱包地址
 
-#### 检查钱包是否已分配
+- **Return Value**: All wallet addresses in address pool
+
+#### Check if Wallet is Allocated
+
 ```solidity
 function isWalletAllocated(address wallet) public view returns (bool)
 ```
-- **功能**: 检查指定钱包地址是否已被分配
 
-### 2. 转账金额设置
+- **Function**: Check if specified wallet address has been allocated
 
-#### 设置默认转账金额
+### 2. Transfer Amount Settings
+
+#### Set Default Transfer Amount
+
 ```solidity
 function setDefaultTransferAmount(uint256 amount) public onlyAdmin
 ```
-- **功能**: 设置mintV3时向分配钱包转账的默认金额
-- **权限**: 仅管理员角色可调用
-- **默认值**: 1 ETH
-- **事件**: `eveTransferAmountUpdated(uint256 newAmount)`
 
-### 3. 增强的mintV3功能
+- **Function**: Set default transfer amount for mintV3 to allocated wallet
+- **Permission**: Only admin role can call
+- **Default Value**: 1 ETH
+- **Event**: `eveTransferAmountUpdated(uint256 newAmount)`
 
-#### 自动钱包分配和转账
+### 3. Enhanced mintV3 Functionality
+
+#### Automatic Wallet Allocation and Transfer
+
 ```solidity
 function mintV3(uint256 tokenId, string[] memory strParams) public payable
 ```
-- **新增功能**:
-  - 自动从钱包地址库中分配一个未使用的钱包地址
-  - 将分配的钱包地址与Agent关联存储
-  - 向分配的钱包地址转账指定金额的ETH
-- **事件**: `eveWalletAllocated(bytes32 sid, address walletAddress, uint256 transferAmount)`
 
-### 4. Agent钱包地址查询
+- **New Features**:
+  - Automatically allocate an unused wallet address from wallet address pool
+  - Associate allocated wallet address with Agent and store it
+  - Transfer specified amount of ETH to allocated wallet address
+- **Event**: `eveWalletAllocated(bytes32 sid, address walletAddress, uint256 transferAmount)`
 
-#### 获取Agent的钱包地址
+### 4. Agent Wallet Address Query
+
+#### Get Agent Wallet Address
+
 ```solidity
 function getAgentWallet(bytes32 sid) public view returns (address)
 ```
-- **功能**: 根据Agent的SID获取其关联的钱包地址
 
-#### 获取Agent完整信息（包含钱包地址）
+- **Function**: Get Agent's associated wallet address based on Agent's SID
+
+#### Get Complete Agent Information (Including Wallet Address)
+
 ```solidity
 function getAgentV3(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, string memory, uint256, address)
 ```
-- **返回值**: 包含钱包地址的完整Agent信息
 
-## 使用流程
+- **Return Value**: Complete Agent information including wallet address
 
-### 1. 初始化钱包地址库
+## Usage Process
+
+### 1. Initialize Wallet Address Pool
+
 ```javascript
-// 管理员添加钱包地址到地址库
-const walletAddresses = [
-    "0x1234567890123456789012345678901234567890",
-    "0x2345678901234567890123456789012345678901",
-    "0x3456789012345678901234567890123456789012"
-];
-await agent.addWalletToPool(walletAddresses);
+// Admin adds wallet addresses to address pool
+const walletAddresses = ['0x1234567890123456789012345678901234567890', '0x2345678901234567890123456789012345678901', '0x3456789012345678901234567890123456789012']
+await agent.addWalletToPool(walletAddresses)
 ```
 
-### 2. 设置转账金额
+### 2. Set Transfer Amount
+
 ```javascript
-// 设置转账金额为0.5 ETH
-await agent.setDefaultTransferAmount(ethers.parseEther("0.5"));
+// Set transfer amount to 0.5 ETH
+await agent.setDefaultTransferAmount(ethers.parseEther('0.5'))
 ```
 
-### 3. 向合约发送ETH
+### 3. Send ETH to Contract
+
 ```javascript
-// 向合约发送ETH用于转账
+// Send ETH to contract for transfers
 await deployer.sendTransaction({
-    to: agentAddress,
-    value: ethers.parseEther("10.0")
-});
+  to: agentAddress,
+  value: ethers.parseEther('10.0'),
+})
 ```
 
-### 4. 创建Agent（自动分配钱包）
+### 4. Create Agent (Automatic Wallet Allocation)
+
 ```javascript
-const strParams = [
-    "avatar_url",
-    "Agent名称",
-    "Agent描述",
-    "欢迎消息"
-];
+const strParams = ['avatar_url', 'Agent Name', 'Agent Description', 'Welcome Message']
 
-// mintV3会自动分配钱包地址并转账
-const tx = await agent.mintV3(1, strParams);
-const receipt = await tx.wait();
+// mintV3 will automatically allocate wallet address and transfer
+const tx = await agent.mintV3(1, strParams)
+const receipt = await tx.wait()
 
-// 监听钱包分配事件
+// Listen for wallet allocation event
 const walletAllocatedEvent = receipt.logs.find(log => {
-    const parsed = agent.interface.parseLog(log);
-    return parsed?.name === "eveWalletAllocated";
-});
+  const parsed = agent.interface.parseLog(log)
+  return parsed?.name === 'eveWalletAllocated'
+})
 ```
 
-### 5. 查询Agent钱包地址
+### 5. Query Agent Wallet Address
+
 ```javascript
-// 获取Agent的钱包地址
-const agentWallet = await agent.getAgentWallet(agentSid);
-console.log("Agent钱包地址:", agentWallet);
+// Get Agent wallet address
+const agentWallet = await agent.getAgentWallet(agentSid)
+console.log('Agent wallet address:', agentWallet)
 
-// 获取完整Agent信息
-const agentInfo = await agent.getAgentV3(agentSid);
-console.log("Agent完整信息:", agentInfo);
+// Get complete Agent information
+const agentInfo = await agent.getAgentV3(agentSid)
+console.log('Complete Agent information:', agentInfo)
 ```
 
-## 安全特性
+## Security Features
 
-1. **权限控制**: 只有管理员角色可以添加钱包地址和设置转账金额
-2. **防重复分配**: 已分配的钱包地址不会再次被分配
-3. **地址验证**: 添加钱包地址时会验证地址有效性
-4. **转账安全**: 使用`call`方法进行安全的ETH转账
+1. **Permission Control**: Only admin role can add wallet addresses and set transfer amounts
+2. **Duplicate Allocation Prevention**: Allocated wallet addresses will not be allocated again
+3. **Address Validation**: Validates address validity when adding wallet addresses
+4. **Transfer Security**: Uses `call` method for secure ETH transfers
 
-## 事件说明
+## Event Descriptions
 
-- `eveWalletAllocated`: 钱包分配事件，包含SID、钱包地址和转账金额
-- `eveWalletAdded`: 钱包地址添加到地址库事件
-- `eveTransferAmountUpdated`: 转账金额更新事件
+- `eveWalletAllocated`: Wallet allocation event, includes SID, wallet address and transfer amount
+- `eveWalletAdded`: Wallet address added to address pool event
+- `eveTransferAmountUpdated`: Transfer amount update event
 
-## 注意事项
+## Notes
 
-1. 确保合约中有足够的ETH用于转账
-2. 钱包地址库为空时无法创建Agent
-3. 所有钱包地址分配完毕后需要添加新的钱包地址
-4. 转账金额不应超过合约余额
-5. 建议定期检查钱包地址库的可用数量
+1. Ensure contract has sufficient ETH for transfers
+2. Cannot create Agent when wallet address pool is empty
+3. Need to add new wallet addresses when all wallet addresses are allocated
+4. Transfer amount should not exceed contract balance
+5. Recommend regularly checking available wallet count in address pool
 
-## 测试
+## Testing
 
-运行测试脚本验证功能：
+Run test script to verify functionality:
+
 ```bash
 npx hardhat run scripts/HyperAGI_Agent_Wallet_Test.ts --network localhost
 ```

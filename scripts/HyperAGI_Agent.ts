@@ -25,7 +25,7 @@ async function main() {
 
   console.info('setServiceAddress')
 
-  await (await instance.setContractAddress(['0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea', HyperAGI_Storage.target, '0x709722ed57452a5B25860e4C8D1F7BB5275ac00B', '0x615f77318Ff5C101ff513e673c937C71ffDed5B3'])).wait()
+  await (await instance.setContractAddress([process.env.ROLES_CFG_ADDRESS, HyperAGI_Storage.target, '0x709722ed57452a5B25860e4C8D1F7BB5275ac00B', '0x615f77318Ff5C101ff513e673c937C71ffDed5B3', '0x77f50749a65aad04EE0A63f96466E39912EF2A8b'])).wait()
 
   console.info('contractFactory address:', instance.target)
 

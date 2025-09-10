@@ -1,43 +1,49 @@
-# HyperAGI_Agent 钱包地址库功能实现总结
+# HyperAGI_Agent Wallet Address Pool Feature Implementation Summary
 
-## 已实现的功能
+## Implemented Features
 
-### ✅ 1. Agent增加钱包地址
-- 每个Agent现在都有一个关联的钱包地址
-- 钱包地址存储在Storage合约中，通过Agent的ID进行关联
-- 提供`getAgentWallet(bytes32 sid)`函数查询Agent的钱包地址
-- 提供`getAgentV3(bytes32 sid)`函数获取包含钱包地址的完整Agent信息
+### ✅ 1. Agent Wallet Address Addition
 
-### ✅ 2. 钱包地址库管理
-- **地址库存储**: 使用`address[] public walletAddressPool`存储所有可用钱包地址
-- **分配状态跟踪**: 使用`mapping(address => bool) public allocatedWallets`跟踪已分配的钱包
-- **重复检查**: 使用`mapping(address => bool) public walletInPool`防止重复添加
-- **自动分配**: `getNextAvailableWallet()`函数自动分配下一个可用钱包地址
-- **防重复分配**: 已分配的钱包地址不会再次被分配
+- Each Agent now has an associated wallet address
+- Wallet addresses are stored in Storage contract, associated through Agent ID
+- Provides `getAgentWallet(bytes32 sid)` function to query Agent wallet address
+- Provides `getAgentV3(bytes32 sid)` function to get complete Agent information including wallet address
 
-### ✅ 3. 管理员权限控制
-- **角色检查**: 使用`onlyAdmin`修饰符确保只有管理员可以执行关键操作
-- **权限验证**: 通过`HyperAGI_Roles_Cfg`合约验证管理员角色
-- **管理员功能**:
-  - `addWalletToPool()`: 添加钱包地址到地址库
-  - `setDefaultTransferAmount()`: 设置默认转账金额
+### ✅ 2. Wallet Address Pool Management
 
-### ✅ 4. mintV3自动分配和转账
-- **自动分配**: mintV3时自动从地址库分配一个钱包地址
-- **地址存储**: 将分配的钱包地址与Agent关联存储
-- **自动转账**: 向分配的钱包地址转账指定金额的ETH
-- **转账金额**: 默认1 ETH，管理员可配置
-- **事件记录**: 记录钱包分配和转账事件
+- **Address Pool Storage**: Uses `address[] public walletAddressPool` to store all available wallet addresses
+- **Allocation Status Tracking**: Uses `mapping(address => bool) public allocatedWallets` to track allocated wallets
+- **Duplicate Check**: Uses `mapping(address => bool) public walletInPool` to prevent duplicate additions
+- **Automatic Allocation**: `getNextAvailableWallet()` function automatically allocates next available wallet address
+- **Prevent Duplicate Allocation**: Allocated wallet addresses will not be allocated again
 
-## 新增函数列表
+### ✅ 3. Admin Permission Control
 
-### 管理员功能
+- **Role Check**: Uses `onlyAdmin` modifier to ensure only admins can execute critical operations
+- **Permission Verification**: Verifies admin role through `HyperAGI_Roles_Cfg` contract
+- **Admin Functions**:
+  - `addWalletToPool()`: Add wallet addresses to address pool
+  - `setDefaultTransferAmount()`: Set default transfer amount
+
+### ✅ 4. mintV3 Automatic Allocation and Transfer
+
+- **Automatic Allocation**: mintV3 automatically allocates a wallet address from address pool
+- **Address Storage**: Associates allocated wallet address with Agent and stores it
+- **Automatic Transfer**: Transfers specified amount of ETH to allocated wallet address
+- **Transfer Amount**: Default 1 ETH, configurable by admin
+- **Event Recording**: Records wallet allocation and transfer events
+
+## New Function List
+
+### Admin Functions
+
 ```solidity
 function addWalletToPool(address[] memory walletAddresses) public onlyAdmin
 function setDefaultTransferAmount(uint256 amount) public onlyAdmin
 ```
 
-### 查询功能
+### Query Functions
+
 ```solidity
 function getWalletPoolInfo() public view returns (uint256 totalWallets, uint256 allocatedWallets, uint256 availableWallets)
 function getWalletPool() public view returns (address[] memory)
@@ -46,24 +52,28 @@ function getAgentWallet(bytes32 sid) public view returns (address)
 function getAgentV3(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, string memory, uint256, address)
 ```
 
-### 内部功能
+### Internal Functions
+
 ```solidity
 function getNextAvailableWallet() private returns (address)
 ```
 
-### 修改的功能
+### Modified Functions
+
 ```solidity
 function mintV3(uint256 tokenId, string[] memory strParams) public payable
 ```
 
-## 新增事件
+## New Events
+
 ```solidity
 event eveWalletAllocated(bytes32 sid, address walletAddress, uint256 transferAmount);
 event eveWalletAdded(address walletAddress);
 event eveTransferAmountUpdated(uint256 newAmount);
 ```
 
-## 新增状态变量
+## New State Variables
+
 ```solidity
 address[] public walletAddressPool;
 mapping(address => bool) public allocatedWallets;
@@ -72,83 +82,88 @@ uint256 public nextWalletIndex;
 uint256 public defaultTransferAmount = 1 ether;
 ```
 
-## 安全特性
+## Security Features
 
-1. **权限控制**: 关键操作需要管理员权限
-2. **地址验证**: 添加钱包地址时验证地址有效性
-3. **防重复**: 防止重复添加和重复分配钱包地址
-4. **转账安全**: 使用`call`方法进行安全的ETH转账
-5. **余额检查**: 转账前检查合约余额是否充足
+1. **Permission Control**: Critical operations require admin permission
+2. **Address Validation**: Validates address validity when adding wallet addresses
+3. **Duplicate Prevention**: Prevents duplicate addition and duplicate allocation of wallet addresses
+4. **Transfer Security**: Uses `call` method for secure ETH transfers
+5. **Balance Check**: Checks contract balance before transfer
 
-## 使用示例
+## Usage Examples
 
-### 1. 初始化
+### 1. Initialization
+
 ```javascript
-// 部署合约后，添加钱包地址到地址库
-const wallets = ["0x123...", "0x456...", "0x789..."];
-await agent.addWalletToPool(wallets);
+// After deploying contract, add wallet addresses to address pool
+const wallets = ['0x123...', '0x456...', '0x789...']
+await agent.addWalletToPool(wallets)
 
-// 设置转账金额
-await agent.setDefaultTransferAmount(ethers.parseEther("0.5"));
+// Set transfer amount
+await agent.setDefaultTransferAmount(ethers.parseEther('0.5'))
 
-// 向合约发送ETH
+// Send ETH to contract
 await deployer.sendTransaction({
-    to: agentAddress,
-    value: ethers.parseEther("10.0")
-});
+  to: agentAddress,
+  value: ethers.parseEther('10.0'),
+})
 ```
 
-### 2. 创建Agent
-```javascript
-// mintV3会自动分配钱包地址并转账
-const strParams = ["avatar", "name", "desc", "welcome"];
-const tx = await agent.mintV3(1, strParams);
-const receipt = await tx.wait();
+### 2. Create Agent
 
-// 监听钱包分配事件
+```javascript
+// mintV3 will automatically allocate wallet address and transfer
+const strParams = ['avatar', 'name', 'desc', 'welcome']
+const tx = await agent.mintV3(1, strParams)
+const receipt = await tx.wait()
+
+// Listen for wallet allocation event
 const event = receipt.logs.find(log => {
-    const parsed = agent.interface.parseLog(log);
-    return parsed?.name === "eveWalletAllocated";
-});
+  const parsed = agent.interface.parseLog(log)
+  return parsed?.name === 'eveWalletAllocated'
+})
 ```
 
-### 3. 查询信息
+### 3. Query Information
+
 ```javascript
-// 查询Agent钱包地址
-const wallet = await agent.getAgentWallet(sid);
+// Query Agent wallet address
+const wallet = await agent.getAgentWallet(sid)
 
-// 查询钱包地址库状态
-const poolInfo = await agent.getWalletPoolInfo();
-console.log("可用钱包数量:", poolInfo.availableWallets);
+// Query wallet address pool status
+const poolInfo = await agent.getWalletPoolInfo()
+console.log('Available wallet count:', poolInfo.availableWallets)
 ```
 
-## 部署和测试
+## Deployment and Testing
 
-### 部署脚本
-- `scripts/HyperAGI_Agent_Deploy.ts`: 基础部署脚本
-- `scripts/HyperAGI_Agent_Wallet_Test.ts`: 完整功能测试脚本
+### Deployment Scripts
 
-### 运行测试
+- `scripts/HyperAGI_Agent_Deploy.ts`: Basic deployment script
+- `scripts/HyperAGI_Agent_Wallet_Test.ts`: Complete functionality test script
+
+### Run Tests
+
 ```bash
-# 部署合约
+# Deploy contracts
 npx hardhat run scripts/HyperAGI_Agent_Deploy.ts --network localhost
 
-# 运行完整测试
+# Run complete test
 npx hardhat run scripts/HyperAGI_Agent_Wallet_Test.ts --network localhost
 ```
 
-## 注意事项
+## Notes
 
-1. **合约余额**: 确保合约中有足够的ETH用于转账
-2. **钱包地址库**: 定期检查可用钱包数量，及时添加新地址
-3. **权限管理**: 妥善管理管理员角色，避免权限泄露
-4. **转账金额**: 根据实际需求设置合适的转账金额
-5. **事件监听**: 建议监听相关事件以便跟踪钱包分配和转账情况
+1. **Contract Balance**: Ensure contract has sufficient ETH for transfers
+2. **Wallet Address Pool**: Regularly check available wallet count, add new addresses in time
+3. **Permission Management**: Properly manage admin roles, avoid permission leaks
+4. **Transfer Amount**: Set appropriate transfer amount according to actual needs
+5. **Event Listening**: Recommend listening to related events to track wallet allocation and transfer status
 
-## 扩展建议
+## Extension Suggestions
 
-1. **批量操作**: 可以添加批量mint功能
-2. **钱包回收**: 可以添加钱包地址回收机制
-3. **转账策略**: 可以实现更复杂的转账策略（如分批转账）
-4. **统计分析**: 可以添加钱包使用统计功能
-5. **紧急停止**: 可以添加紧急停止功能以暂停钱包分配
+1. **Batch Operations**: Can add batch mint functionality
+2. **Wallet Recovery**: Can add wallet address recovery mechanism
+3. **Transfer Strategy**: Can implement more complex transfer strategies (such as batch transfers)
+4. **Statistical Analysis**: Can add wallet usage statistics functionality
+5. **Emergency Stop**: Can add emergency stop functionality to pause wallet allocation

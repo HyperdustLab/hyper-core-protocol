@@ -125,6 +125,9 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
         emit eveDifficulty(_totalNum, activeNumIndex);
 
+        // Update agent counts in HyperAGI_Agent contract
+        agentAddress.setCounts(_totalNum, activeNumIndex);
+
         agentWalletAddress.mint(payable(address(this)), actualEpochAward);
 
         uint256 baseRewardReleaseAward = actualEpochAward - gasFee;

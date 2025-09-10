@@ -1,15 +1,15 @@
-
 // SPDX-License-Identifier: UNLICENSED
 /**
  * ONLY FOR TEST PURPOSE, NOT FOR PRODUCTION！！
- * 
+ *
  * @title HyperAGI_Agent
  * @dev This is an upgradeable contract for managing AI agents in the HyperAGI ecosystem
  * Features include agent minting, wallet allocation, energy recharge, and time period management
  * Agents are created from POP NFTs and assigned unique wallet addresses from a pool
- * 
+ *
  * @dev Upgrade History:
  * - 2025-09-05: Added wallet address allocation functionality in mint methods
+ * - 2025-09-10: Added total count and online count management functionality with admin-only setter
  */
 
 pragma solidity ^0.8.0;
@@ -34,39 +34,36 @@ abstract contract IERC1155 {
     function balanceOf(address account, uint256 id) public view returns (uint256) {}
 }
 
+interface IHyperAGI_Agent_Wallet {
+    function allocateWallet() external payable returns (address);
+}
+
 contract HyperAGI_Agent is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     // Time period structure
     struct TimePeriod {
-        uint256 startTime;  // Start time (timestamp)
-        uint256 endTime;    // End time (timestamp)
+        uint256 startTime; // Start time (timestamp)
+        uint256 endTime; // End time (timestamp)
     }
 
     address public _rolesCfgAddress;
     address public _storageAddress;
     address public _agentPOPNFTAddress;
     address public _groundRodAddress;
+    address public _agentWalletAddress;
 
     uint256[] private groundRodLevelKeys;
     mapping(uint256 => uint256) public _groundRodLevels;
-
-    // Wallet address pool related variables
-    address[] public walletAddressPool;
-    mapping(address => bool) public allocatedWallets;
-    mapping(address => bool) public walletInPool;
-    uint256 public nextWalletIndex;
-    uint256 public defaultTransferAmount ; // Default transfer amount 1 ETH
 
     event eveSaveAgent(bytes32 sid);
     event eveRechargeEnergy(bytes32 sid, uint256 groundRodLevelId);
     event eveAccountRechargeEnergy(address account, uint256 groundRodLevelId);
     event eveAgentAccount(address account, uint256 index);
-    event eveWalletAllocated(bytes32 sid, address walletAddress, uint256 transferAmount);
-    event eveWalletAdded(address walletAddress);
-    event eveTransferAmountUpdated(uint256 newAmount);
     event eveTimePeriodUpdated(bytes32 sid, uint256 startTime, uint256 endTime);
+    event eveTotalCountUpdated(uint256 totalCount);
+    event eveOnlineCountUpdated(uint256 onlineCount);
 
     // Admin role check modifier
     modifier onlyAdmin() {
@@ -96,11 +93,16 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         _groundRodAddress = groundRodAddress;
     }
 
+    function setAgentWalletAddress(address agentWalletAddress) public onlyOwner {
+        _agentWalletAddress = agentWalletAddress;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _storageAddress = contractaddressArray[1];
         _agentPOPNFTAddress = contractaddressArray[2];
         _groundRodAddress = contractaddressArray[3];
+        _agentWalletAddress = contractaddressArray[4];
     }
 
     function setGroundRodLevels(uint256[] memory tokenIds, uint256[] memory levels) public onlyOwner {
@@ -113,58 +115,6 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         for (uint i = 0; i < tokenIds.length; i++) {
             _groundRodLevels[tokenIds[i]] = levels[i];
         }
-    }
-
-    // Add wallet addresses to address pool (admin only)
-    function addWalletToPool(address[] memory walletAddresses) public onlyAdmin {
-        for (uint i = 0; i < walletAddresses.length; i++) {
-            address wallet = walletAddresses[i];
-            require(wallet != address(0), "invalid wallet address");
-            require(!walletInPool[wallet], "wallet already in pool");
-            require(!allocatedWallets[wallet], "wallet already allocated");
-            
-            walletAddressPool.push(wallet);
-            walletInPool[wallet] = true;
-            
-            emit eveWalletAdded(wallet);
-        }
-    }
-
-    // Set default transfer amount (admin only)
-    function setDefaultTransferAmount(uint256 amount) public onlyAdmin {
-        defaultTransferAmount = amount;
-        emit eveTransferAmountUpdated(amount);
-    }
-
-    // Get next available wallet address
-    function getNextAvailableWallet() private returns (address) {
-        require(walletAddressPool.length > 0, "no wallets in pool");
-        require(nextWalletIndex < walletAddressPool.length, "no available wallets");
-        
-        address wallet = walletAddressPool[nextWalletIndex];
-        require(!allocatedWallets[wallet], "wallet already allocated");
-        
-        allocatedWallets[wallet] = true;
-        nextWalletIndex++;
-        
-        return wallet;
-    }
-
-    // Check wallet address pool status
-    function getWalletPoolInfo() public view returns (uint256 totalWallets, uint256 allocatedWallets, uint256 availableWallets) {
-        totalWallets = walletAddressPool.length;
-        allocatedWallets = nextWalletIndex;
-        availableWallets = totalWallets - allocatedWallets;
-    }
-
-    // Get all addresses in wallet address pool
-    function getWalletPool() public view returns (address[] memory) {
-        return walletAddressPool;
-    }
-
-    // Check if wallet is allocated
-    function isWalletAllocated(address wallet) public view returns (bool) {
-        return allocatedWallets[wallet];
     }
 
     function mint(uint256 tokenId, string memory avatar, string memory nickName, string memory personalization) public {
@@ -190,11 +140,6 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
 
-
-        address allocatedWallet = getNextAvailableWallet();
-        storageAddress.setAddress(storageAddress.genKey("walletAddress", id), allocatedWallet);
-
-
         if (!storageAddress.getBool(msg.sender.toHexString())) {
             storageAddress.setBool(msg.sender.toHexString(), true);
             uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
@@ -211,7 +156,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveSaveAgent(sid);
     }
 
-    function mintV2(uint256 tokenId, string memory avatar, string memory nickName, string memory personalization, string memory welcomeMessage) public {
+    function mintV2(uint256 /* tokenId */, string memory /* avatar */, string memory /* nickName */, string memory /* personalization */, string memory /* welcomeMessage */) public pure {
         revert("not supported");
     }
 
@@ -239,10 +184,6 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
 
-        // Allocate wallet address
-        address allocatedWallet = getNextAvailableWallet();
-        storageAddress.setAddress(storageAddress.genKey("walletAddress", id), allocatedWallet);
-
         if (!storageAddress.getBool(msg.sender.toHexString())) {
             storageAddress.setBool(msg.sender.toHexString(), true);
             uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
@@ -260,16 +201,16 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         storageAddress.setUint(storageAddress.genKey("timePeriodStart", id), currentTime);
         storageAddress.setUint(storageAddress.genKey("timePeriodEnd", id), defaultEndTime);
 
-        emit eveAccountRechargeEnergy(msg.sender, 5);
+        // Allocate wallet through wallet contract
+        if (_agentWalletAddress != address(0)) {
+            IHyperAGI_Agent_Wallet agentWallet = IHyperAGI_Agent_Wallet(_agentWalletAddress);
+            address walletAddress = agentWallet.allocateWallet{value: msg.value}();
 
-        emit eveRechargeEnergy(sid, 1);
-
-        // Transfer to allocated wallet address
-        if (address(this).balance >= defaultTransferAmount) {
-            (bool success, ) = allocatedWallet.call{value: defaultTransferAmount}("");
-            require(success, "transfer failed");
-            emit eveWalletAllocated(sid, allocatedWallet, defaultTransferAmount);
+            storageAddress.setAddress(storageAddress.genKey("walletAddress", id), walletAddress);
         }
+
+        emit eveAccountRechargeEnergy(msg.sender, 5);
+        emit eveRechargeEnergy(sid, 1);
 
         emit eveSaveAgent(sid);
     }
@@ -300,7 +241,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveSaveAgent(sid);
     }
 
-    function updateV2(bytes32 sid, string memory avatar, string memory nickName, string memory personalization, string memory welcomeMessage) public {
+    function updateV2(bytes32 /* sid */, string memory /* avatar */, string memory /* nickName */, string memory /* personalization */, string memory /* welcomeMessage */) public pure {
         revert("not supported");
     }
 
@@ -345,15 +286,14 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         );
     }
 
-
     function getAgentWallet(bytes32 sid) public view returns (address) {
+        // Fallback to storage if wallet contract not set
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
         uint256 id = storageAddress.getBytes32Uint(sid);
         require(id > 0, "not found");
-        
+
         return storageAddress.getAddress(storageAddress.genKey("walletAddress", id));
     }
-
 
     function getAgentV3(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, string memory, uint256, address, uint256, uint256) {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
@@ -362,6 +302,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         require(id > 0, "not found");
 
+        address walletAddress = storageAddress.getAddress(storageAddress.genKey("walletAddress", id));
         return (
             storageAddress.getUint(storageAddress.genKey("tokenId", id)),
             storageAddress.getString(storageAddress.genKey("avatar", id)),
@@ -369,7 +310,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
             storageAddress.getString(storageAddress.genKey("personalization", id)),
             storageAddress.getString(storageAddress.genKey("welcomeMessage", id)),
             storageAddress.getUint(storageAddress.genKey("groundRodLevel", id)),
-            storageAddress.getAddress(storageAddress.genKey("walletAddress", id)),
+            walletAddress,
             storageAddress.getUint(storageAddress.genKey("timePeriodStart", id)),
             storageAddress.getUint(storageAddress.genKey("timePeriodEnd", id))
         );
@@ -404,7 +345,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     }
 
     function generateUniqueHash(uint256 nextId) private view returns (bytes32) {
-        return keccak256(abi.encodePacked(block.timestamp, block.difficulty, nextId));
+        return keccak256(abi.encodePacked(block.timestamp, block.prevrandao, nextId));
     }
 
     function getAgentAccount(uint256 index) public view returns (address) {
@@ -458,6 +399,33 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         return currentTime >= startTime && currentTime <= endTime;
     }
 
-    // Allow contract to receive ETH
-    receive() external payable {}
+    // Set total count and online count (only admin can call)
+    function setCounts(uint256 totalCount, uint256 onlineCount) public onlyAdmin {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        storageAddress.setUint("totalCount", totalCount);
+        storageAddress.setUint("onlineCount", onlineCount);
+        emit eveTotalCountUpdated(totalCount);
+        emit eveOnlineCountUpdated(onlineCount);
+    }
+
+    // Internal method for contract-to-contract calls
+    function setCountsInternal(uint256 totalCount, uint256 onlineCount) external {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        storageAddress.setUint("totalCount", totalCount);
+        storageAddress.setUint("onlineCount", onlineCount);
+        emit eveTotalCountUpdated(totalCount);
+        emit eveOnlineCountUpdated(onlineCount);
+    }
+
+    // Get total count
+    function getTotalCount() public view returns (uint256) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        return storageAddress.getUint("totalCount");
+    }
+
+    // Get online count
+    function getOnlineCount() public view returns (uint256) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        return storageAddress.getUint("onlineCount");
+    }
 }

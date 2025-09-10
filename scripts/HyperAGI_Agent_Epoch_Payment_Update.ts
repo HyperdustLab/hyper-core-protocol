@@ -3,22 +3,23 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  console.log('Starting contract upgrade...')
+  console.log('Starting HyperAGI_Agent_Epoch_Payment contract upgrade...')
 
-  const _HyperAGI_Agent = await ethers.getContractFactory('HyperAGI_Agent')
+  const _HyperAGI_Agent_Epoch_Payment = await ethers.getContractFactory('HyperAGI_Agent_Epoch_Payment')
   console.log('Contract factory created successfully')
 
-  const proxyAddress = '0xE5f2180b8a12628403748A47749a5166B15bc2A0'
+  // TODO: Please replace with actual proxy contract address
+  const proxyAddress = '0x17aA605a48bF951EfAff7a90F20a28dAb58d3Eb0' // Need to replace with actual address
   console.log('Proxy contract address:', proxyAddress)
 
-  const HyperAGI_Agent = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_Agent)
-  console.log('Contract upgraded successfully!')
-  console.log('Proxy contract address:', await HyperAGI_Agent.getAddress())
+  const HyperAGI_Agent_Epoch_Payment = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_Agent_Epoch_Payment)
+  console.log('Contract upgrade successful!')
+  console.log('Proxy contract address:', await HyperAGI_Agent_Epoch_Payment.getAddress())
 
-  const implementationAddress = await upgrades.erc1967.getImplementationAddress(await HyperAGI_Agent.getAddress())
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress(await HyperAGI_Agent_Epoch_Payment.getAddress())
   console.log('Implementation contract address:', implementationAddress)
 
-  // Wait for a few block confirmations
+  // Wait for several block confirmations
   console.log('Waiting for block confirmations...')
   await new Promise(resolve => setTimeout(resolve, 10000))
 
@@ -47,7 +48,7 @@ async function main() {
   }
 }
 
-// We recommend this pattern to be able to use async/await everywhere q
+// We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch(error => {
   console.error(error)

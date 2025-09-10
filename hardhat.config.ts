@@ -114,7 +114,7 @@ const config: HardhatUserConfig = {
   verify: {
     etherscan: {
       apiKey: '',
-      apiTimeout: 60 * 1000, // 设置超时时间为300秒
+      apiTimeout: 60 * 1000, // Set timeout to 60 seconds
     },
   },
 }

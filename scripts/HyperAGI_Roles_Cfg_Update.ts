@@ -5,7 +5,7 @@ import { ethers, run, upgrades } from 'hardhat'
 async function main() {
   const _HyperAGI_Roles_Cfg = await ethers.getContractFactory('HyperAGI_Roles_Cfg')
 
-  const proxyAddress = '0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea' // 你的代理合约地址
+  const proxyAddress = '0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea' // Your proxy contract address
 
   const proxyContract = await ethers.getContractAt('HyperAGI_Roles_Cfg', proxyAddress)
 
