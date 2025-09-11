@@ -1,5 +1,5 @@
 
-##Hyperdust Protocol is a AI inference layer
+## The protocol used in the HyperAGI chain verifies off-chain inference computation on GPUs, and distributes rewards ($HYPT) to AI inference miners and live embodied agents.
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
