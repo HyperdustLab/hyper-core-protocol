@@ -1,4 +1,4 @@
-## HyperAGI Network
+## HyperAGI core protocol
 
 Hyperdust Protocol is a Layer 3 AI solution on Arbitrum One
 
