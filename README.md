@@ -1,12 +1,6 @@
 ## HyperAGI Network
 
-Hyperdust Protocol is a Layer 3 AI solution on Arbitrum One, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Ethereum's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
-
-GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
-
-Users can utilize various tools to develop their LLM-driven Proof of Personhood (PoP) AGI agents. These agents can be configured as head-less or as embodied AI agent. AI developers can instantly utilize or deploy LLM AI microservices, facilitating the creation of programmable, autonomous on-chain agents.
-
-These programmable agents are capable of issuing or owning cryptocurrency assets, and can continuously operate or trade, contributing to a vibrant, autonomous crypto economy that supports the realization of UBAI.
+Hyperdust Protocol is a Layer 3 AI solution on Arbitrum One
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
@@ -14,16 +8,12 @@ Official Website : www.hyperagi.ai
 Social media : https://linktr.ee/hyperagi 
 
 
-### Hyper Network Whitepaper (full version):
-
-https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
-
 ### The details of token issurence and gas price update refer to
 
 https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
 
-#### Hyper Network Smart Contracts
+#### HyperAGI Network Smart Contracts
 
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
