@@ -1,5 +1,5 @@
 
-##Hyperdust Protocol is a Layer 3 AI solution on Arbitrum One
+##Hyperdust Protocol is a AI inference layer
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
@@ -12,7 +12,7 @@ Social media : https://linktr.ee/hyperagi
 https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
 
-#### HyperAGI Network Smart Contracts
+#### Smart Contracts
 
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
