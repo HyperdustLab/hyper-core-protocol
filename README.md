@@ -1,7 +1,7 @@
 
 ## The protocol used in the HyperAGI chain verifies off-chain inference computation on GPUs, and distributes rewards ($HYPT) to AI inference miners and live embodied agents.
 
-![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
+![image](https://github.com/HyperdustLab/hyper-core-protocol/blob/main/how-it-works.png)
 
 Official Website : www.hyperagi.ai
 Social media : https://linktr.ee/hyperagi 
