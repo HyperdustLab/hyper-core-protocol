@@ -6,12 +6,69 @@
  * @dev This is an upgradeable contract for handling agent epoch fee payments
  * After successful payment, it automatically updates the agent's time period
  * 
+ * @dev Deployment Log:
+ * ===========================================
+ * Contract: HyperAGI_Agent_Epoch_Payment
+ * ===========================================
+ * 
+ * Initial Deployment:
+ * - Date: 2025-01-27
+ * - Contract Address: [TO_BE_DEPLOYED]
+ * - Network: Conflux Testnet
+ * - Deployer: [TO_BE_DEPLOYED]
+ * - Transaction Hash: [TO_BE_DEPLOYED]
+ * - Block Number: [TO_BE_DEPLOYED]
+ * - Gas Used: [TO_BE_DEPLOYED]
+ * 
+ * Configuration:
+ * - Initial Epoch Duration: 384 seconds (6.4 minutes)
+ * - Gas Fee Formula: Base / (Difficulty * Factor) * Base
+ * - Base Value: 38000
+ * - Difficulty: Total agents / Online agents
+ * - Factor: Online agents * 300,000,000
+ * 
+ * Technical Details:
+ * - Compiler Version: ^0.8.0
+ * - OpenZeppelin Version: ^4.9.0
+ * - Contract Type: Upgradeable (Proxy Pattern)
+ * - Initialization: Required
+ * 
+ * Features:
+ * - Dynamic gas fee calculation based on agent statistics
+ * - Admin role verification system
+ * - Input validation and overflow protection
+ * - Event logging for payment tracking
+ * - ETH withdrawal functionality
+ * 
+ * Security:
+ * - OwnableUpgradeable for access control
+ * - Admin role verification via HyperAGI_Roles_Cfg
+ * - Input validation on all public functions
+ * - Safe math operations with overflow protection
+ * 
  * @dev Upgrade History:
- * - 2025-09-08: Implemented dynamic gas fee calculation based on agent statistics
- *               Added formula: Gas Fee = Base / Difficulty / Factor * Base
- *               Base = 38000, Difficulty = Total agents / Online agents, Factor = Online agents * 300,000,000
- *               Added getAgentStatistics() and calculateGasFee() functions
- *               Updated payment functions to use dynamic fee calculation instead of fixed 0.001 ETH
+ * ===========================================
+ * 
+ * v1.1 - 2025-09-08:
+ * - Implemented dynamic gas fee calculation based on agent statistics
+ * - Added formula: Gas Fee = Base / Difficulty / Factor * Base
+ * - Base = 38000, Difficulty = Total agents / Online agents, Factor = Online agents * 300,000,000
+ * - Added getAgentStatistics() and calculateGasFee() functions
+ * - Updated payment functions to use dynamic fee calculation instead of fixed 0.001 ETH
+ * - Enhanced precision handling with 1e18 multiplier
+ * - Added comprehensive input validation
+ * 
+ * @dev Deployment Checklist:
+ * ===========================================
+ * [ ] Deploy contract
+ * [ ] Initialize with owner address
+ * [ ] Set roles configuration address
+ * [ ] Set agent contract address
+ * [ ] Verify all functions work correctly
+ * [ ] Test payment functionality
+ * [ ] Update contract address in deployment log
+ * [ ] Update transaction hash and block number
+ * [ ] Update gas used information
  */
 pragma solidity ^0.8.0;
 
@@ -132,7 +189,7 @@ contract HyperAGI_Agent_Epoch_Payment is OwnableUpgradeable {
         uint256 result = (base * 1e18) / difficultyTimesFactor;
         
         // Convert result to wei (1e18 wei = 1 ETH)
-        uint256 gasFeeInWei = result;
+        uint256 gasFeeInWei = result*base;
         
         return gasFeeInWei;
     }

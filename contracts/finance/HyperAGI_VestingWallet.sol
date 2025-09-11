@@ -1,3 +1,60 @@
+
+
+// SPDX-License-Identifier: UNLICENSED
+/**
+ * ONLY FOR TEST PURPOSE, NOT FOR PRODUCTION！！
+ * 
+ * @title HyperAGI_VestingWallet
+ * @dev This is an upgradeable contract for managing token vesting and release schedules
+ * Supports linear vesting with configurable release intervals and initial release rates
+ * 
+ * @dev Deployment Log:
+ * ===========================================
+ * Contract: HyperAGI_VestingWallet
+ * ===========================================
+ * 
+ * 
+ * Configuration:
+ * - Vesting Type: Linear vesting with optional initial release
+ * - Release Interval: Configurable (in seconds)
+ * - Delay Period: Configurable delay before vesting starts
+ * - Initial Release Rate: Configurable percentage for first release
+ * - Linear Periods: Configurable number of linear vesting periods
+ * 
+ * Technical Details:
+ * - Compiler Version: ^0.8.0
+ * - OpenZeppelin Version: ^4.9.0
+ * - Contract Type: Upgradeable (Proxy Pattern)
+ * - Initialization: Required
+ * 
+ * Features:
+ * - Batch account allocation with vesting schedules
+ * - Configurable release intervals and delay periods
+ * - Optional initial release rate for immediate partial release
+ * - Linear vesting over multiple periods
+ * - Date-based release tracking and validation
+ * - ETH withdrawal functionality for vested amounts
+ * - Event logging for all vesting operations
+ * 
+ * Security:
+ * - OwnableUpgradeable for access control
+ * - Role-based access control (MINTER_ROLE)
+ * - Input validation on all public functions
+ * - Safe math operations with overflow protection
+ * - Timestamp validation for release operations
+ * 
+ * @dev Upgrade History:
+ * ===========================================
+ * 
+ * v1.0 - 2025-09-11:
+ * - Initial implementation of vesting wallet functionality
+ * - Support for linear vesting with configurable parameters
+ * - Batch allocation system for multiple accounts
+ * - Date-based release tracking and validation
+ * - Role-based access control for allocation operations
+ * - Event logging for transparency and tracking
+ * 
+ */
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
