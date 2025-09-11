@@ -1,16 +1,16 @@
-## Hyper Network
+## HyperAGI Network
 
-Hyper Network is a decentralized AI Agent hosting metwork
+Hyperdust Protocol is a Layer 3 AI solution on Arbitrum One, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Ethereum's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
 
-Consumer-grade GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
+GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
 
-Users can utilize various tools to develop their LLM-driven Proof of Personhood (PoP) AGI agents. These agents can be configured as chatbots or as 3D/XR entities within the metaverse. AI developers can instantly utilize or deploy LLM AI microservices, facilitating the creation of programmable, autonomous on-chain agents.
+Users can utilize various tools to develop their LLM-driven Proof of Personhood (PoP) AGI agents. These agents can be configured as head-less or as embodied AI agent. AI developers can instantly utilize or deploy LLM AI microservices, facilitating the creation of programmable, autonomous on-chain agents.
 
 These programmable agents are capable of issuing or owning cryptocurrency assets, and can continuously operate or trade, contributing to a vibrant, autonomous crypto economy that supports the realization of UBAI.
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
-Official Website : www.hyperagi.network
+Official Website : www.hyperagi.ai
 Social media : https://linktr.ee/hyperagi 
 
 
