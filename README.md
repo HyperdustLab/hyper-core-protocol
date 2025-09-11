@@ -50,6 +50,3 @@ https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=shari
 
 
 
-[![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/YZRhmqcBAcs)
-
-
