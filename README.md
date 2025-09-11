@@ -14,10 +14,6 @@ Official Website : www.hyperagi.network
 Social media : https://linktr.ee/hyperagi 
 
 
-### Light Paper of Hyper Network:
-
-https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
-
 ### Hyper Network Whitepaper (full version):
 
 https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
