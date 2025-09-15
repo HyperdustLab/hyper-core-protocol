@@ -46,6 +46,8 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
     uint256 private _rand;
 
+    address public _KEYTokenAddress;
+
     receive() external payable {}
 
     event eveRewards(address agentAccount, uint256 epochAward, uint256 rand, uint256 nonce, uint256 gasFee, uint256 groundRodLevel);
@@ -77,12 +79,17 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
         _agentWalletAddress = agentWalletAddress;
     }
 
+    function setKEYTokenAddress(address KEYTokenAddress) public onlyOwner {
+        _KEYTokenAddress = KEYTokenAddress;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _agentAddress = contractaddressArray[1];
         _baseRewardReleaseAddress = contractaddressArray[2];
         _agentWalletAddress = contractaddressArray[3];
         _walletAccountAddress = contractaddressArray[4];
+        _KEYTokenAddress = contractaddressArray[5];
     }
 
     function rewards(bytes32[] memory agentStatus, uint256 nonce, uint256 gasFee) public {
@@ -90,17 +97,35 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
         (address[] memory activeAgent, uint256 activeNumIndex, uint256 _totalNum) = countActiveAgent(agentStatus);
 
+        // Update agent counts in HyperAGI_Agent contract
+        HyperAGI_Agent agentAddress = HyperAGI_Agent(payable(_agentAddress));
+
+        address[] memory filteredActiveAgent = new address[](activeAgent.length);
+        uint256 filteredCount = 0;
+
+        for (uint256 i = 0; i < activeAgent.length; i++) {
+            (bool success, bytes memory data) = _KEYTokenAddress.staticcall(abi.encodeWithSignature("balanceOf(address,uint256)", activeAgent[i], 2));
+            if (success && data.length >= 32) {
+                uint256 balance = abi.decode(data, (uint256));
+                if (balance > 0) {
+                    filteredActiveAgent[filteredCount] = activeAgent[i];
+                    filteredCount++;
+                }
+            }
+        }
+        activeAgent = filteredActiveAgent;
+        activeNumIndex = filteredCount;
+
         HyperAGI_AgentWallet agentWalletAddress = HyperAGI_AgentWallet(payable(_agentWalletAddress));
         HyperAGI_BaseReward_Release baseRewardReleaseAddress = HyperAGI_BaseReward_Release(payable(_baseRewardReleaseAddress));
         HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
-        HyperAGI_Agent agentAddress = HyperAGI_Agent(payable(_agentAddress));
 
         address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();
 
         uint256 epochAward = agentWalletAddress._epochAward();
 
-        if (_totalNum < 350) {
-            _totalNum = 350;
+        if (_totalNum < 1000) {
+            _totalNum = 1000;
         }
 
         if (epochAward == 0) {
@@ -111,6 +136,8 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
             return;
         }
 
+        agentAddress.setCounts(_totalNum, activeNumIndex);
+
         uint256 index = _getRandom(0, activeNumIndex);
 
         address account = activeAgent[index];
@@ -118,23 +145,20 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
         uint256 groundRodLevel = agentAddress.getGroundRodLevel(account);
 
         if (groundRodLevel == 0) {
-            groundRodLevel = 1;
+            groundRodLevel = 5;
         }
 
         uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(1, Math.mulDiv(_totalNum, 1, activeNumIndex));
 
         emit eveDifficulty(_totalNum, activeNumIndex);
 
-        // Update agent counts in HyperAGI_Agent contract
-        agentAddress.setCounts(_totalNum, activeNumIndex);
-
-        agentWalletAddress.mint(payable(address(this)), actualEpochAward);
+        //  agentWalletAddress.mint(payable(address(this)), actualEpochAward);
 
         uint256 baseRewardReleaseAward = actualEpochAward - gasFee;
 
-        baseRewardReleaseAddress.addBaseRewardReleaseRecord{value: baseRewardReleaseAward}(baseRewardReleaseAward, account);
+        //  baseRewardReleaseAddress.addBaseRewardReleaseRecord{value: baseRewardReleaseAward}(baseRewardReleaseAward, account);
 
-        transferETH(payable(_GasFeeCollectionWallet), gasFee);
+        // transferETH(payable(_GasFeeCollectionWallet), gasFee);
 
         walletAccountAddress.addAmount(gasFee);
 

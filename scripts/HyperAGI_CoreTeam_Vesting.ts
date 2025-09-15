@@ -3,23 +3,26 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const contract = await ethers.getContractFactory('HyperAGI_Agent_Epoch_Awards')
+  console.info('Starting deployment of HyperAGI_CoreTeam_Vesting contract...')
+
+  const contract = await ethers.getContractFactory('HyperAGI_CoreTeam_Vesting')
+
+  console.info('Contract factory obtained successfully')
+
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
+
+  console.info('Proxy contract deployment completed')
+
   await instance.waitForDeployment()
 
-  await (await instance.setContractAddress(['0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea', '0x599068C3c2fcfE9b1D04cdCe1B4af3E881f3c2d5', '0xdC775536e0b60dDF0cEAda4Dc0aC8Fd9b9238E2C', '0x6759Aa64749b8fE3E294E7A73Ce6ee14eBF4270d', '0x401f50176C74F0aa49FeF7Aea83eeB349bEABF19'])).wait()
+  console.info('Waiting for deployment to complete')
 
-  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', '0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea')
+  console.info('HyperAGI_CoreTeam_Vesting contract address:', instance.target)
 
-  await (await HyperAGI_Roles_Cfg.addAdmin(instance.target)).wait()
+  // Get implementation contract address
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress(instance.target)
 
-  // const HyperAGI_AgentWallet = await ethers.getContractAt('HyperAGI_AgentWallet', '0x6759Aa64749b8fE3E294E7A73Ce6ee14eBF4270d')
-
-  // await (await HyperAGI_AgentWallet.grantRole('0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', instance.target)).wait()
-
-  console.info('contractFactory address:', instance.target)
-
-  const implementationAddress = await upgrades.erc1967.getImplementationAddress(await instance.getAddress())
+  console.info('Implementation contract address:', implementationAddress)
 
   // Method 1: Force verification
   try {
@@ -70,8 +73,8 @@ async function main() {
   }
 }
 
-// We recommend this pattern to be able to use async/await everywhere q
-// and properly handle errors.
+// Recommended pattern for using async/await anywhere
+// and properly handling errors
 main().catch(error => {
   console.error(error)
   process.exitCode = 1

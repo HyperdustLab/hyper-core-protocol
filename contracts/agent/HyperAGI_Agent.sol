@@ -9,7 +9,7 @@
  *
  * @dev Upgrade History:
  * - 2025-09-05: Added wallet address allocation functionality in mint methods
- * - 2025-09-10: Added total count and online count management functionality with admin-only setter
+ * - 2025-09-10: Added total count and online count management functionality with admin-only setter and getter
  */
 
 pragma solidity ^0.8.0;
@@ -68,6 +68,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     // Admin role check modifier
     modifier onlyAdmin() {
         require(_rolesCfgAddress != address(0), "roles config not set");
+
         HyperAGI_Roles_Cfg rolesCfg = HyperAGI_Roles_Cfg(_rolesCfgAddress);
         require(rolesCfg.hasAdminRole(msg.sender) || msg.sender == owner(), "not admin role");
         _;
@@ -163,6 +164,8 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     function mintV3(uint256 tokenId, string[] memory strParams) public payable {
         // require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
 
+        address owner = IERC721(_agentPOPNFTAddress).ownerOf(tokenId);
+
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         require(storageAddress.getUint(tokenId.toString()) == 0, "already minted");
@@ -184,11 +187,11 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
 
-        if (!storageAddress.getBool(msg.sender.toHexString())) {
-            storageAddress.setBool(msg.sender.toHexString(), true);
-            uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
+        if (!storageAddress.getBool(owner.toHexString())) {
+            storageAddress.setBool(owner.toHexString(), true);
+            uint256 index = storageAddress.setAddressArray("agentAccountList", owner);
 
-            emit eveAgentAccount(msg.sender, index);
+            emit eveAgentAccount(owner, index);
         }
 
         storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), 5);

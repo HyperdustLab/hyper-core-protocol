@@ -3,23 +3,27 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const contract = await ethers.getContractFactory('HyperAGI_Agent_Epoch_Awards')
-  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
-  await instance.waitForDeployment()
+  console.log('Starting contract upgrade...')
 
-  await (await instance.setContractAddress(['0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea', '0x599068C3c2fcfE9b1D04cdCe1B4af3E881f3c2d5', '0xdC775536e0b60dDF0cEAda4Dc0aC8Fd9b9238E2C', '0x6759Aa64749b8fE3E294E7A73Ce6ee14eBF4270d', '0x401f50176C74F0aa49FeF7Aea83eeB349bEABF19'])).wait()
+  const _HyperAGI_CoreTeam_Vesting = await ethers.getContractFactory('HyperAGI_CoreTeam_Vesting')
+  console.log('Contract factory created successfully')
 
-  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', '0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea')
+  const proxyAddress = '0xc43FEe967318D92eFdf797C0dAEb5736E1E17F84'
+  console.log('Proxy contract address:', proxyAddress)
 
-  await (await HyperAGI_Roles_Cfg.addAdmin(instance.target)).wait()
+  const instance = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_CoreTeam_Vesting)
+  console.log('Contract upgrade successful!')
+  console.log('Proxy contract address:', await instance.getAddress())
 
-  // const HyperAGI_AgentWallet = await ethers.getContractAt('HyperAGI_AgentWallet', '0x6759Aa64749b8fE3E294E7A73Ce6ee14eBF4270d')
-
-  // await (await HyperAGI_AgentWallet.grantRole('0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', instance.target)).wait()
-
-  console.info('contractFactory address:', instance.target)
-
+  // Get implementation contract address
   const implementationAddress = await upgrades.erc1967.getImplementationAddress(await instance.getAddress())
+  console.log('Implementation contract address:', implementationAddress)
+
+  // Wait for block confirmation
+  console.log('Waiting for block confirmation...')
+  await new Promise(resolve => setTimeout(resolve, 10000))
+
+  console.log('Starting contract source code verification...')
 
   // Method 1: Force verification
   try {
@@ -68,6 +72,12 @@ async function main() {
   } catch (error) {
     console.error('❌ Command line verification failed:', error.message)
   }
+
+  console.log('\n=== Verification Information ===')
+  console.log('Proxy contract address:', proxyAddress)
+  console.log('Implementation contract address:', implementationAddress)
+  console.log('Browser link: https://explorer.hyperagi.network/address/' + implementationAddress)
+  console.log('If automatic verification fails, please manually verify the above address in browser')
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

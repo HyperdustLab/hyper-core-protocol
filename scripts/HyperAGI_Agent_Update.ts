@@ -8,7 +8,7 @@ async function main() {
   const _HyperAGI_Agent = await ethers.getContractFactory('HyperAGI_Agent')
   console.log('Contract factory created successfully')
 
-  const proxyAddress = '0xE5f2180b8a12628403748A47749a5166B15bc2A0'
+  const proxyAddress = '0x7d2524F684A743a0115Eb0bdAe11Cad7ceA8012E'
   console.log('Proxy contract address:', proxyAddress)
 
   const HyperAGI_Agent = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_Agent)
@@ -27,22 +27,29 @@ async function main() {
     await run('verify:verify', {
       address: implementationAddress,
       constructorArguments: [],
-      force: true, // Force verification even if contract is partially verified
     })
     console.log('✅ Contract verification successful!')
   } catch (error) {
-    console.error('❌ Force verification failed:', error)
-    console.log('Trying without force verification...')
-
-    try {
-      await run('verify:verify', {
-        address: implementationAddress,
-        constructorArguments: [],
-      })
-      console.log('✅ Contract verification successful!')
-    } catch (secondError) {
-      console.error('❌ Verification failed:', secondError)
-      console.log('Please manually verify contract address:', implementationAddress)
+    console.error('❌ Verification failed:', error)
+    
+    // Check if the error is about contract already being verified
+    if (error instanceof Error && error.message && error.message.includes('already verified')) {
+      console.log('ℹ️ Contract is already verified on the block explorer')
+      console.log('ℹ️ No further action needed')
+    } else {
+      console.log('Trying with force verification...')
+      try {
+        await run('verify:verify', {
+          address: implementationAddress,
+          constructorArguments: [],
+          force: true,
+        })
+        console.log('✅ Contract verification successful with force!')
+      } catch (forceError) {
+        console.error('❌ Force verification also failed:', forceError)
+        console.log('Please manually verify contract address:', implementationAddress)
+        console.log('Block explorer URL: https://explorer.hyperagi.network/address/' + implementationAddress)
+      }
     }
   }
 }
