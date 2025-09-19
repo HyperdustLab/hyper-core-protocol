@@ -1,7 +1,5 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 /**
- * ONLY FOR TEST PURPOSE, NOT FOR PRODUCTION！！
- *
  * @title HyperAGI_Agent
  * @dev This is an upgradeable contract for managing AI agents in the HyperAGI ecosystem
  * Features include agent minting, wallet allocation, energy recharge, and time period management
@@ -42,20 +40,22 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
+    // 原有的状态变量 - 必须保持顺序不变
+    address public _rolesCfgAddress;
+    address public _storageAddress;
+    address public _agentPOPNFTAddress;
+    address public _groundRodAddress;
+
+    uint256[] private groundRodLevelKeys;
+    mapping(uint256 => uint256) public _groundRodLevels;
+
+    address public _agentWalletAddress;
+
     // Time period structure
     struct TimePeriod {
         uint256 startTime; // Start time (timestamp)
         uint256 endTime; // End time (timestamp)
     }
-
-    address public _rolesCfgAddress;
-    address public _storageAddress;
-    address public _agentPOPNFTAddress;
-    address public _groundRodAddress;
-    address public _agentWalletAddress;
-
-    uint256[] private groundRodLevelKeys;
-    mapping(uint256 => uint256) public _groundRodLevels;
 
     event eveSaveAgent(bytes32 sid);
     event eveRechargeEnergy(bytes32 sid, uint256 groundRodLevelId);

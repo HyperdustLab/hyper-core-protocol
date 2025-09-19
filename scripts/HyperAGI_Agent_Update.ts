@@ -8,7 +8,7 @@ async function main() {
   const _HyperAGI_Agent = await ethers.getContractFactory('HyperAGI_Agent')
   console.log('Contract factory created successfully')
 
-  const proxyAddress = '0x7d2524F684A743a0115Eb0bdAe11Cad7ceA8012E'
+  const proxyAddress = '0xF1793c8500680AcAB40425474C2636d360f4FAA7'
   console.log('Proxy contract address:', proxyAddress)
 
   const HyperAGI_Agent = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_Agent)
