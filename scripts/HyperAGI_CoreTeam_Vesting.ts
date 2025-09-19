@@ -9,7 +9,7 @@ async function main() {
 
   console.info('Contract factory obtained successfully')
 
-  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
+  const instance = await upgrades.deployProxy(contract, ['0xc619a8e80f485f5cccb87041bad2d2b0acc843e2'])
 
   console.info('Proxy contract deployment completed')
 

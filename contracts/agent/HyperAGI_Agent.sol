@@ -161,6 +161,61 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         revert("not supported");
     }
 
+    function adminMintV3(uint256 tokenId, string[] memory strParams) public payable onlyAdmin {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+
+        address owner = IERC721(_agentPOPNFTAddress).ownerOf(tokenId);
+
+        require(storageAddress.getUint(tokenId.toString()) == 0, "already minted");
+
+        storageAddress.setUint(tokenId.toString(), 1);
+
+        uint256 id = storageAddress.getNextId();
+
+        bytes32 sid = generateUniqueHash(id);
+        storageAddress.setBytes32Uint(sid, id);
+
+        storageAddress.setUint(storageAddress.genKey("tokenId", id), tokenId);
+
+        storageAddress.setString(storageAddress.genKey("avatar", id), strParams[0]);
+
+        storageAddress.setString(storageAddress.genKey("nickName", id), strParams[1]);
+        storageAddress.setString(storageAddress.genKey("personalization", id), strParams[2]);
+        storageAddress.setString(storageAddress.genKey("welcomeMessage", id), strParams[3]);
+
+        storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
+
+        if (!storageAddress.getBool(owner.toHexString())) {
+            storageAddress.setBool(owner.toHexString(), true);
+            uint256 index = storageAddress.setAddressArray("agentAccountList", owner);
+
+            emit eveAgentAccount(owner, index);
+        }
+
+        storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), 5);
+
+        storageAddress.setUint(string(abi.encodePacked("groundRodLevel", "_", msg.sender.toHexString())), 5);
+
+        // Set default time period (current time to 6.4 minutes later)
+        uint256 currentTime = block.timestamp;
+        uint256 defaultEndTime = currentTime + 384; // Default 6.4 minutes validity period (384 seconds)
+        storageAddress.setUint(storageAddress.genKey("timePeriodStart", id), currentTime);
+        storageAddress.setUint(storageAddress.genKey("timePeriodEnd", id), defaultEndTime);
+
+        // Allocate wallet through wallet contract
+        if (_agentWalletAddress != address(0)) {
+            IHyperAGI_Agent_Wallet agentWallet = IHyperAGI_Agent_Wallet(_agentWalletAddress);
+            address walletAddress = agentWallet.allocateWallet{value: msg.value}();
+
+            storageAddress.setAddress(storageAddress.genKey("walletAddress", id), walletAddress);
+        }
+
+        emit eveAccountRechargeEnergy(msg.sender, 5);
+        emit eveRechargeEnergy(sid, 1);
+
+        emit eveSaveAgent(sid);
+    }
+
     function mintV3(uint256 tokenId, string[] memory strParams) public payable {
         // require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
 

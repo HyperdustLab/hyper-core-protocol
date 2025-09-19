@@ -31,7 +31,7 @@ async function main() {
     console.log('✅ Contract verification successful!')
   } catch (error) {
     console.error('❌ Verification failed:', error)
-    
+
     // Check if the error is about contract already being verified
     if (error instanceof Error && error.message && error.message.includes('already verified')) {
       console.log('ℹ️ Contract is already verified on the block explorer')
