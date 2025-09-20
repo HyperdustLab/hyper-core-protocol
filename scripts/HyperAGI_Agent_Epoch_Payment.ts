@@ -10,7 +10,7 @@ async function main() {
 
   console.info('contractFactory address:', instance.target)
 
-  await (await instance.setContractAddress([process.env.ROLES_CFG_ADDRESS, '0x4C3D5B8c8b065B97Ec5b7e0f8dFA2299CC5Ed82a'])).wait()
+  await (await instance.setContractAddress([process.env.ROLES_CFG_ADDRESS, '0xb90F1d2b0eF4aC49548cad06d44Bc1145793332C'])).wait()
 
   const implementationAddress = await upgrades.erc1967.getImplementationAddress(await instance.getAddress())
   await run('verify:verify', {
