@@ -1,19 +1,15 @@
-
 ## The protocol used in the HyperAGI chain verifies off-chain inference computation on GPUs, and distributes rewards ($HYPT) to AI inference miners and live embodied agents.
 
 ![image](https://github.com/HyperdustLab/hyper-core-protocol/blob/main/how-it-works.png)
 
 Official Website : www.hyperagi.ai
-Social media : https://linktr.ee/hyperagi 
-
+Social media : https://linktr.ee/hyperagi
 
 ### The details of token issurence and gas price update refer to
 
 https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
-
 #### Smart Contracts
-
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
 
@@ -46,6 +42,3 @@ https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=shari
 - `Hyperdust_Node_Mgr.sol`: The miner management contract of the Hyperdust Protocol, responsible for maintaining information, status, current online numbers, rendering numbers, and other maintenance tasks of miner nodes.
 
 - `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information.
-
-
-

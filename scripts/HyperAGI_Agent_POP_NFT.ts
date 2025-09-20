@@ -11,8 +11,8 @@ async function main() {
   console.info('contractFactory address:', contract.target)
 
   const initializeData = abiCoder.encode(
-    ['string', 'string', 'address'], // 初始化函数的参数类型
-    ['HyperAGI Agent POP NFT', 'HAPN', process.env.ADMIN_Wallet_Address] // 初始化函数的参数值
+    ['string', 'string', 'address'], // Initialize function parameter types
+    ['HyperAGI Agent POP NFT', 'HAPN', process.env.ADMIN_Wallet_Address] // Initialize function parameter values
   )
 
   console.info('initializeData:', initializeData)

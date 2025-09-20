@@ -61,7 +61,7 @@ describe('HyperAGI_VestingWallet', function () {
       const tx = await vestingWallet.connect(owner).appendAccountTotalAllocation(accounts, amounts, releaseConfig, { value: parseEther('100') })
       const receipt = await tx.wait()
 
-      // 通过logs获取eveUpdate事件信息
+      // Get eveUpdate event information through logs
       const logs = await ethers.provider.getLogs({ fromBlock: receipt.blockNumber, toBlock: receipt.blockNumber })
       const eveUpdateLog = logs.find(log => log.topics[0] === ethers.id('eveUpdate(string[],address[],uint256[],uint256[],uint256[])'))
       if (eveUpdateLog) {
@@ -85,13 +85,13 @@ describe('HyperAGI_VestingWallet', function () {
 
       await vestingWallet.connect(owner).appendAccountTotalAllocation(accounts, amounts, releaseConfig, { value: parseEther('100') })
 
-      // 修改：增加更多的时间等待
-      // 等待延迟期 + 一个完整的释放周期
+      // Modification: Add more time waiting
+      // Wait for delay period + one complete release cycle
       const waitTime = releaseInterval * (delayVestingNum + 1)
       await ethers.provider.send('evm_increaseTime', [waitTime])
       await ethers.provider.send('evm_mine', [])
 
-      // 获取当前区块时间戳并打出来以便调试
+      // Get current block timestamp and print for debugging
       const block = await ethers.provider.getBlock('latest')
       console.log('Current timestamp:', block.timestamp)
 
@@ -110,7 +110,7 @@ describe('HyperAGI_VestingWallet', function () {
     it('should reject appendAccountTotalAllocation from non-MINTER_ROLE', async function () {
       const [owner, nonMinter] = await ethers.getSigners()
 
-      // 测试数据
+      // Test data
       const accounts = [nonMinter.address]
       const amounts = [ethers.parseEther('1.0')]
       const releaseConfiguration = [
@@ -120,7 +120,7 @@ describe('HyperAGI_VestingWallet', function () {
         12, // linearVestingNum
       ]
 
-      // 使用 revertedWithCustomError 替代 revertedWith
+      // Use revertedWithCustomError instead of revertedWith
       await expect(vestingWallet.connect(nonMinter).appendAccountTotalAllocation(accounts, amounts, releaseConfiguration, { value: ethers.parseEther('1.0') }))
         .to.be.revertedWithCustomError(vestingWallet, 'AccessControlUnauthorizedAccount')
         .withArgs(nonMinter.address, await vestingWallet.MINTER_ROLE())
@@ -151,7 +151,7 @@ describe('Linear Vesting Process', function () {
     const amounts: BigNumberish[] = [parseEther('100')]
     const releaseConfig: number[] = [30 * 24 * 60 * 60, 3, 20, 12]
 
-    // 记录初始时间
+    // Record initial time
     const initialBlock = await ethers.provider.getBlock('latest')
     const initialTimestamp = initialBlock.timestamp
     const initialDate = new Date(initialTimestamp * 1000)
@@ -159,19 +159,19 @@ describe('Linear Vesting Process', function () {
 
     await vestingWallet.connect(owner).appendAccountTotalAllocation(accounts, amounts, releaseConfig, { value: parseEther('100') })
 
-    // 移动时间到延迟期结束后
+    // Move time to after delay period
     const delayPeriod = 3 * 30 * 24 * 60 * 60
     await ethers.provider.send('evm_increaseTime', [delayPeriod])
     await ethers.provider.send('evm_mine', [])
 
-    // 使用getCurrentFormattedDate获取当前日期
+    // Use getCurrentFormattedDate to get current date
     const formattedDate = await getCurrentFormattedDate()
     console.log('Current date from block timestamp:', formattedDate)
 
     const unlockedAmount = await vestingWallet.getAmount(formattedDate, addr1.address, await vestingWallet.PENDING_RELEASE_AMOUNT())
     console.log('Unlocked amount:', ethers.formatEther(unlockedAmount))
 
-    // 如果有待释放金额，才进行提取
+    // Only withdraw if there is pending release amount
     if (unlockedAmount > 0) {
       await vestingWallet.connect(addr1).withdraw(formattedDate)
       console.log('Withdrawal successful')

@@ -3,39 +3,27 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const _HyperAGI_Storage = await ethers.getContractFactory('HyperAGI_Storage')
-  const HyperAGI_Storage = await upgrades.deployProxy(_HyperAGI_Storage, [process.env.ADMIN_Wallet_Address])
-  await HyperAGI_Storage.waitForDeployment()
+  console.log('Starting contract upgrade...')
 
-  console.info('HyperAGI_Storage:', HyperAGI_Storage.target)
+  const _HyperAGI_CoreTeam_Vesting = await ethers.getContractFactory('HyperAGI_CoreTeam_Vesting')
+  console.log('Contract factory created successfully')
 
-  const contract = await ethers.getContractFactory('HyperAGI_Agent')
+  const proxyAddress = '0xc43FEe967318D92eFdf797C0dAEb5736E1E17F84'
+  console.log('Proxy contract address:', proxyAddress)
 
-  console.info('getContractFactory')
+  const instance = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_CoreTeam_Vesting)
+  console.log('Contract upgrade successful!')
+  console.log('Proxy contract address:', await instance.getAddress())
 
-  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
+  // Get implementation contract address
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress(await instance.getAddress())
+  console.log('Implementation contract address:', implementationAddress)
 
-  console.info('deployProxy')
+  // Wait for block confirmation
+  console.log('Waiting for block confirmation...')
+  await new Promise(resolve => setTimeout(resolve, 10000))
 
-  await instance.waitForDeployment()
-
-  console.info('waitForDeployment')
-
-  await (await HyperAGI_Storage.setServiceAddress(instance.target)).wait()
-
-  console.info('setServiceAddress')
-
-  await (await instance.setContractAddress([process.env.ROLES_CFG_ADDRESS, HyperAGI_Storage.target, '0x709722ed57452a5B25860e4C8D1F7BB5275ac00B', '0x615f77318Ff5C101ff513e673c937C71ffDed5B3', '0x77f50749a65aad04EE0A63f96466E39912EF2A8b'])).wait()
-
-  console.info('contractFactory address:', instance.target)
-
-  await (await instance.setGroundRodLevels([1730870914364], [5])).wait()
-
-  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', process.env.ROLES_CFG_ADDRESS)
-
-  await (await HyperAGI_Roles_Cfg.addAdmin(instance.target)).wait()
-
-  const implementationAddress = await upgrades.erc1967.getImplementationAddress(instance.target)
+  console.log('Starting contract source code verification...')
 
   // Method 1: Force verification
   try {
@@ -84,6 +72,12 @@ async function main() {
   } catch (error) {
     console.error('❌ Command line verification failed:', error.message)
   }
+
+  console.log('\n=== Verification Information ===')
+  console.log('Proxy contract address:', proxyAddress)
+  console.log('Implementation contract address:', implementationAddress)
+  console.log('Browser link: https://explorer.hyperagi.network/address/' + implementationAddress)
+  console.log('If automatic verification fails, please manually verify the above address in browser')
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

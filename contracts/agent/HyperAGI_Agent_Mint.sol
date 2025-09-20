@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+/**
+ * ONLY FOR TEST PURPOSE, NOT FOR PRODUCTION！！
+ * This deployment is for agent creation testing.
+ */
+
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -53,6 +58,8 @@ contract HyperAGI_Agent_Mint is OwnableUpgradeable {
         // Get mint info
         (, , uint256 price, address contractAddress, uint256 tokenId, bytes1 contractType, , uint256 allowNum, uint256 allowBuyNum) = HyperAGI_mNFT_Mint(_mNFTMintAddress).getMintInfo(id);
 
+
+
         // Ensure the contract address matches the token address
         require(contractAddress == _tokenAddress, "Contract address must match token address");
 
@@ -64,8 +71,10 @@ contract HyperAGI_Agent_Mint is OwnableUpgradeable {
         // Call mint function from mNFTMint contract with the ETH value
         uint256[] memory tokenIds = HyperAGI_mNFT_Mint(_mNFTMintAddress).mintWithReturnTokenIdV2{value: payAmount}(id, 1, msg.sender);
 
+
         // Create agent with the minted token
-        Agent.HyperAGI_Agent(_agentAddress).mintV3(tokenIds[0], agentParams);
+        Agent.HyperAGI_Agent(payable(_agentAddress)).mintV3(tokenIds[0], agentParams);
+    
 
         emit eveAgentCreated(tokenIds[0], keccak256(abi.encodePacked(block.timestamp, block.difficulty, id)));
     }

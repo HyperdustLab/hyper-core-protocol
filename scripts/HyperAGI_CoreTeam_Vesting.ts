@@ -3,39 +3,26 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const _HyperAGI_Storage = await ethers.getContractFactory('HyperAGI_Storage')
-  const HyperAGI_Storage = await upgrades.deployProxy(_HyperAGI_Storage, [process.env.ADMIN_Wallet_Address])
-  await HyperAGI_Storage.waitForDeployment()
+  console.info('Starting deployment of HyperAGI_CoreTeam_Vesting contract...')
 
-  console.info('HyperAGI_Storage:', HyperAGI_Storage.target)
+  const contract = await ethers.getContractFactory('HyperAGI_CoreTeam_Vesting')
 
-  const contract = await ethers.getContractFactory('HyperAGI_Agent')
+  console.info('Contract factory obtained successfully')
 
-  console.info('getContractFactory')
+  const instance = await upgrades.deployProxy(contract, ['0xc619a8e80f485f5cccb87041bad2d2b0acc843e2'])
 
-  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
-
-  console.info('deployProxy')
+  console.info('Proxy contract deployment completed')
 
   await instance.waitForDeployment()
 
-  console.info('waitForDeployment')
+  console.info('Waiting for deployment to complete')
 
-  await (await HyperAGI_Storage.setServiceAddress(instance.target)).wait()
+  console.info('HyperAGI_CoreTeam_Vesting contract address:', instance.target)
 
-  console.info('setServiceAddress')
-
-  await (await instance.setContractAddress([process.env.ROLES_CFG_ADDRESS, HyperAGI_Storage.target, '0x709722ed57452a5B25860e4C8D1F7BB5275ac00B', '0x615f77318Ff5C101ff513e673c937C71ffDed5B3', '0x77f50749a65aad04EE0A63f96466E39912EF2A8b'])).wait()
-
-  console.info('contractFactory address:', instance.target)
-
-  await (await instance.setGroundRodLevels([1730870914364], [5])).wait()
-
-  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', process.env.ROLES_CFG_ADDRESS)
-
-  await (await HyperAGI_Roles_Cfg.addAdmin(instance.target)).wait()
-
+  // Get implementation contract address
   const implementationAddress = await upgrades.erc1967.getImplementationAddress(instance.target)
+
+  console.info('Implementation contract address:', implementationAddress)
 
   // Method 1: Force verification
   try {
@@ -86,8 +73,8 @@ async function main() {
   }
 }
 
-// We recommend this pattern to be able to use async/await everywhere q
-// and properly handle errors.
+// Recommended pattern for using async/await anywhere
+// and properly handling errors
 main().catch(error => {
   console.error(error)
   process.exitCode = 1
