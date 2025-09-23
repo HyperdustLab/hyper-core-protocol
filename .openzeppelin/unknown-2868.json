@@ -25013,7 +25013,7 @@
             "slot": "0",
             "type": "t_address",
             "contract": "HyperAGI_Agent",
-            "src": "contracts\\agent\\HyperAGI_Agent.sol:89"
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:91"
           },
           {
             "label": "_storageAddress",
@@ -25021,7 +25021,7 @@
             "slot": "1",
             "type": "t_address",
             "contract": "HyperAGI_Agent",
-            "src": "contracts\\agent\\HyperAGI_Agent.sol:90"
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:92"
           },
           {
             "label": "_agentPOPNFTAddress",
@@ -25029,7 +25029,7 @@
             "slot": "2",
             "type": "t_address",
             "contract": "HyperAGI_Agent",
-            "src": "contracts\\agent\\HyperAGI_Agent.sol:91"
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:93"
           },
           {
             "label": "_groundRodAddress",
@@ -25037,7 +25037,7 @@
             "slot": "3",
             "type": "t_address",
             "contract": "HyperAGI_Agent",
-            "src": "contracts\\agent\\HyperAGI_Agent.sol:92"
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:94"
           },
           {
             "label": "groundRodLevelKeys",
@@ -25045,7 +25045,7 @@
             "slot": "4",
             "type": "t_array(t_uint256)dyn_storage",
             "contract": "HyperAGI_Agent",
-            "src": "contracts\\agent\\HyperAGI_Agent.sol:94"
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:96"
           },
           {
             "label": "_groundRodLevels",
@@ -25053,7 +25053,7 @@
             "slot": "5",
             "type": "t_mapping(t_uint256,t_uint256)",
             "contract": "HyperAGI_Agent",
-            "src": "contracts\\agent\\HyperAGI_Agent.sol:95"
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:97"
           },
           {
             "label": "_agentWalletAddress",
@@ -25061,7 +25061,7 @@
             "slot": "6",
             "type": "t_address",
             "contract": "HyperAGI_Agent",
-            "src": "contracts\\agent\\HyperAGI_Agent.sol:97"
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:99"
           }
         ],
         "types": {
@@ -25114,6 +25114,586 @@
           "t_mapping(t_uint256,t_uint256)": {
             "label": "mapping(uint256 => uint256)",
             "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "bf03ce3502bde99d75a7ea1b479d4ff3cc0f4eb2ccff57bb2465df4bb373b4a9": {
+      "address": "0x13bEc2e1d8baE9EeCBCAd3F136fFCB9782612DC0",
+      "txHash": "0x51b24df300514612a768727600928f83f2b531c6041ab08cceefa0fafe04215e",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:37"
+          },
+          {
+            "label": "_agentAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:39"
+          },
+          {
+            "label": "_baseRewardReleaseAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:41"
+          },
+          {
+            "label": "_agentWalletAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:43"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:45"
+          },
+          {
+            "label": "_rand",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:47"
+          },
+          {
+            "label": "_KEYTokenAddress",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:49"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "b0757624b5700c1b1d087f9ac7c6e57ee283a76611e2a0f236a47bfad61dfbf0": {
+      "address": "0x27e5feeA92166AF33772bdf87B9e274df54FBE18",
+      "txHash": "0xe8b06a695d79a4422cd98182bc4e7bcb80e4f7547c81c07a954141e00c6eb210",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:37"
+          },
+          {
+            "label": "_agentAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:39"
+          },
+          {
+            "label": "_baseRewardReleaseAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:41"
+          },
+          {
+            "label": "_agentWalletAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:43"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:45"
+          },
+          {
+            "label": "_rand",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:47"
+          },
+          {
+            "label": "_KEYTokenAddress",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:49"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "2fd284a34f284e5c066bf90a8bdd59e4bafe6c4ea7b25c772f5b80db6aa1b080": {
+      "address": "0x0138401886268DB6bF82c47B6dDA5C8151B54192",
+      "txHash": "0xb2231dff079a31b52296c0e0761d85a19d80c59c2568bd95b25b2d2657ab6996",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:91"
+          },
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:92"
+          },
+          {
+            "label": "_agentPOPNFTAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:93"
+          },
+          {
+            "label": "_groundRodAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:94"
+          },
+          {
+            "label": "groundRodLevelKeys",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_array(t_uint256)dyn_storage",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:96"
+          },
+          {
+            "label": "_groundRodLevels",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:97"
+          },
+          {
+            "label": "_agentWalletAddress",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:99"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "35b5a52d61a858bcb1ee1c560df51a898dc9190f7c824ec0f5b0257389fd69d9": {
+      "address": "0x1Ad0071A871ac2a3E96569d55F5CAE51C191242a",
+      "txHash": "0xdba0d19a9bfe5ace5a4ab6bf5040adcfdab2d1f625bea365da473b6a215186cd",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:37"
+          },
+          {
+            "label": "_agentAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:39"
+          },
+          {
+            "label": "_baseRewardReleaseAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:41"
+          },
+          {
+            "label": "_agentWalletAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:43"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:45"
+          },
+          {
+            "label": "_rand",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:47"
+          },
+          {
+            "label": "_KEYTokenAddress",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent_Epoch_Awards",
+            "src": "contracts\\epoch\\HyperAGI_Agent_Epoch_Awards.sol:49"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
           },
           "t_uint256": {
             "label": "uint256",

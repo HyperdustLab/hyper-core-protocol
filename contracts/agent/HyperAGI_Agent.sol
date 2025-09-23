@@ -23,9 +23,9 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 abstract contract IERC1155 {
-    function burn(address account, uint256 id, uint256 value) public {}
+    function burn(address account, uint256 id, uint256 value) public virtual {}
 
-    function balanceOf(address account, uint256 id) public view returns (uint256) {}
+    function balanceOf(address account, uint256 id) public view virtual returns (uint256) {}
 }
 
 // Simplified StrUtil abstract contract - only includes used functionality
@@ -61,6 +61,8 @@ abstract contract IHyperAGI_Storage {
     function setBool(string memory key, bool value) public virtual;
 
     function setAddressArray(string memory key, address value) public virtual returns (uint256);
+
+    function setAddressArray(string memory key, uint256 index, address value) public virtual returns (uint256);
 
     function setAddress(string memory key, address value) public virtual;
 
@@ -355,31 +357,20 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     }
 
     function update(bytes32 sid, string memory avatar, string memory nickName, string memory personalization) public {
-        // IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
-
-        // uint256 id = storageAddress.getBytes32Uint(sid);
-
-        // require(id > 0, "not found");
-
-        // uint256 tokenId = storageAddress.getUint(storageAddress.genKey("tokenId", id));
-
-        // require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
-
-        // storageAddress.setString(storageAddress.genKey("avatar", id), avatar);
-
-        // storageAddress.setString(storageAddress.genKey("nickName", id), nickName);
-        // storageAddress.setString(storageAddress.genKey("personalization", id), personalization);
-
-        // if (!storageAddress.getBool(_toHexString(msg.sender))) {
-        //     storageAddress.setBool(_toHexString(msg.sender), true);
-        //     uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
-
-        //     emit eveAgentAccount(msg.sender, index);
-        // }
-
-        // emit eveSaveAgent(sid);
-
-        revert("not supported");
+        IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
+        uint256 id = storageAddress.getBytes32Uint(sid);
+        require(id > 0, "not found");
+        uint256 tokenId = storageAddress.getUint(storageAddress.genKey("tokenId", id));
+        require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
+        storageAddress.setString(storageAddress.genKey("avatar", id), avatar);
+        storageAddress.setString(storageAddress.genKey("nickName", id), nickName);
+        storageAddress.setString(storageAddress.genKey("personalization", id), personalization);
+        if (!storageAddress.getBool(_toHexString(msg.sender))) {
+            storageAddress.setBool(_toHexString(msg.sender), true);
+            uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
+            emit eveAgentAccount(msg.sender, index);
+        }
+        emit eveSaveAgent(sid);
     }
 
     function updateV2(bytes32 /* sid */, string memory /* avatar */, string memory /* nickName */, string memory /* personalization */, string memory /* welcomeMessage */) public pure {
@@ -510,7 +501,6 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         return storageAddress.getUint(key);
     }
 
-    // Admin modify agent's time period
     function updateAgentTimePeriod(bytes32 sid, uint256 startTime, uint256 endTime) public onlyAdmin {
         require(startTime < endTime, "start time must be before end time");
         require(endTime > block.timestamp, "end time must be in the future");
