@@ -69,10 +69,18 @@ const config: HardhatUserConfig = {
       sepolia: process.env.ETHERSCAN_API_KEY,
       optimismSepolia: process.env.Optimism_Sepolia_KEY,
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
-      arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
+      arbitrumMainnet: process.env.ETHERSCAN_API_KEY,
       hyperAGI: '123',
     },
     customChains: [
+      {
+        network: 'sepolia',
+        chainId: 11155111,
+        urls: {
+          apiURL: 'https://api-sepolia.etherscan.io/v2/api?chainid=11155111',
+          browserURL: 'https://sepolia.etherscan.io/',
+        },
+      },
       {
         network: 'arbitrumSepolia',
         chainId: 421614,
@@ -85,7 +93,7 @@ const config: HardhatUserConfig = {
         network: 'arbitrumMainnet',
         chainId: 42161,
         urls: {
-          apiURL: 'https://api.arbiscan.io/api',
+          apiURL: 'https://api.etherscan.io/v2/api?chainid=42161',
           browserURL: 'https://arbiscan.io/',
         },
       },
@@ -93,7 +101,7 @@ const config: HardhatUserConfig = {
         network: 'optimismSepolia',
         chainId: 11155420,
         urls: {
-          apiURL: 'https://api-sepolia-optimistic.etherscan.io/api',
+          apiURL: 'https://api-sepolia-optimistic.etherscan.io/v2/api?chainid=11155420',
           browserURL: 'https://sepolia-optimism.etherscan.io/',
         },
       },

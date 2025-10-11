@@ -3,7 +3,7 @@
 /**
  * ONLY FOR TEST PURPOSE, NOT FOR PRODUCTION！！
  *
- * @title HyperAGI_Foundation_Vesting
+ * @title HyperAGI_Foundation_Vesting_Dev_Test
  * @dev This is an upgradeable contract for managing AI agents in the HyperAGI ecosystem
  * Features include foundation vesting
  *
@@ -15,12 +15,14 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract HyperAGI_Foundation_Vesting is Initializable, OwnableUpgradeable, AccessControlUpgradeable {
-    // Uses built-in HYPT, no token address needed
+contract HyperAGI_Foundation_Vesting_Dev_Test is Initializable, OwnableUpgradeable, AccessControlUpgradeable {
+    // ERC20 token address
+    address public token20Address;
 
     // Vesting configuration
-    uint256 public vestingPercentage; // 20%
+    uint256 public vestingPercentage; // 6%
     uint256 public vestingDuration; // 36 months
     uint256 public secondsPerMonth; // 30 days/month
 
@@ -51,22 +53,20 @@ contract HyperAGI_Foundation_Vesting is Initializable, OwnableUpgradeable, Acces
         _disableInitializers();
     }
 
-    function initialize(address admin) public initializer {
+    function initialize(address initialAdmin, address _token20Address) public initializer {
         __Ownable_init(msg.sender);
         __AccessControl_init();
 
-        _grantRole(DEFAULT_ADMIN_ROLE, admin);
-        _grantRole(ADMIN_ROLE, admin);
+        _grantRole(DEFAULT_ADMIN_ROLE, initialAdmin);
+        _grantRole(ADMIN_ROLE, initialAdmin);
 
         // Initialize vesting configuration
-        vestingPercentage = 6; // 6%
+        vestingPercentage = 5; // 5%
         vestingDuration = 36; // 36 months
         //secondsPerMonth = 30 * 24 * 60 * 60; // 30 days/month
         secondsPerMonth = 600; // 10 minutes/month
+        token20Address = _token20Address;
     }
-
-    // Receive HYPT
-    receive() external payable {}
 
     // Set admin (only one can be set)
     function setAdmin(address _admin) external onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -126,21 +126,22 @@ contract HyperAGI_Foundation_Vesting is Initializable, OwnableUpgradeable, Acces
         return releasable;
     }
 
-    // Release HYPT
+    // Release tokens
     function release() external {
         require(msg.sender == admin, "Not the admin");
         require(vestingStartTime > 0, "Vesting not started");
 
         uint256 releasableAmount = calculateReleasableAmount();
-        require(releasableAmount > 0, "No HYPT to release");
-        require(address(this).balance >= releasableAmount, "Insufficient HYPT balance");
+        require(releasableAmount > 0, "No tokens to release");
+
+        IERC20 token = IERC20(token20Address);
+        require(token.balanceOf(address(this)) >= releasableAmount, "Insufficient token balance");
 
         adminReleased += releasableAmount;
         totalReleased += releasableAmount;
 
-        // Transfer HYPT directly
-        (bool success, ) = payable(admin).call{value: releasableAmount}("");
-        require(success, "HYPT transfer failed");
+        // Transfer tokens
+        require(token.transfer(admin, releasableAmount), "Token transfer failed");
 
         emit TokensReleased(admin, releasableAmount);
     }
@@ -176,10 +177,6 @@ contract HyperAGI_Foundation_Vesting is Initializable, OwnableUpgradeable, Acces
     }
 
     // Management functions
-    function depositHYPT() external payable onlyOwner {
-        require(msg.value > 0, "Must send HYPT");
-    }
-
     function grantManagerRole(address manager) external onlyOwner {
         _grantRole(MANAGER_ROLE, manager);
     }

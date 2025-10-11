@@ -5,11 +5,13 @@ import { ethers, run, upgrades } from 'hardhat'
 async function main() {
   console.info('Starting deployment of HyperAGI_Foundation_Vesting contract...')
 
-  const contract = await ethers.getContractFactory('HyperAGI_Foundation_Vesting')
+  const contract = await ethers.getContractFactory('HyperAGI_Foundation_Vesting_Dev_Test')
 
   console.info('Contract factory obtained successfully')
 
-  const instance = await upgrades.deployProxy(contract, ['0xc619a8e80f485f5cccb87041bad2d2b0acc843e2'])
+  const instance = await upgrades.deployProxy(contract, ['0xc619a8e80f485f5cccb87041bad2d2b0acc843e2', '0x346d64EBc0ac5a0F9A02475bC3F916e35493E8C0'])
+
+  //0xc619a8e80f485f5cccb87041bad2d2b0acc843e2
 
   console.info('Proxy contract deployment completed')
 

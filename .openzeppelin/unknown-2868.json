@@ -435,6 +435,41 @@
       "address": "0x4cae6758075EC4A078012529B089e0c4F2d21eA3",
       "txHash": "0x39f445c2c7b47a68b82b5d2e6d44ef1903270246577ecacd97c796f33838f2a6",
       "kind": "transparent"
+    },
+    {
+      "address": "0x9AE82edBEA886b1F327f847982692B26fc58eE07",
+      "txHash": "0x9f1b4ffd0f3f05326cbc165f3308765a1a793edf9e551c01bf25db4336233d1b",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xE892FE9840A04b038663FC86cCb6626a56bd58c4",
+      "txHash": "0x8cf7d7d731dc2df476cf7b97bcb3dcb2e375b0f4dbb67637400e4253fc1839ee",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xf59496240308fE464DE49ea230CDA758418B0d1D",
+      "txHash": "0xd0c4a17039a9df47028d822fcc70ff24a3beeededb46665a9fd9d5d8366d1c85",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xEfB246a1AbD59E7E8fafF275C0A66C37e7AF049E",
+      "txHash": "0xcbe655d6e60d0230be79448c5f1eb0f75ece0de12b05fbb360dd866cd29d6933",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4e3DD80268c6B826179FD5d8C1506f8A8F244960",
+      "txHash": "0x428b5eaa5fca43d86f0d0c7bc42cbb0591395aa2ae8c5fcc58d66bd1cb0edca0",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x2e133504e37cBEeBc5B6A8064d3CF15cd07fD57b",
+      "txHash": "0x99deefbfba843a44403d5f5b37124676bf2c14209f7800ce09fb3bf474f0c093",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xc6673a1899539803819BA711a7511D6c11a4ea8F",
+      "txHash": "0xf785fb48d1c4119e789af0bda24364db40b3e81b01f33a89c9d8182bf85f3f5a",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -25701,6 +25736,930 @@
           }
         },
         "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "e964ce8fa9b4602abaf7917d5e6481430169e0a9462308501c7ffd8ef4a35081": {
+      "address": "0x29bb95E509322bCc11695097E63C4A55e7d3E4d7",
+      "txHash": "0xf2bc120406e32d98bb85ed1443f3dbcbb3d0ad1d58255ca81dfb899b33be3542",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "token20Address",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:22"
+          },
+          {
+            "label": "vestingPercentage",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:25"
+          },
+          {
+            "label": "vestingDuration",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:26"
+          },
+          {
+            "label": "secondsPerMonth",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:27"
+          },
+          {
+            "label": "totalVestingAmount",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:30"
+          },
+          {
+            "label": "vestingStartTime",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:31"
+          },
+          {
+            "label": "totalReleased",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:32"
+          },
+          {
+            "label": "monthlyReleaseAmount",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:33"
+          },
+          {
+            "label": "admin",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_address",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:36"
+          },
+          {
+            "label": "adminShare",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:37"
+          },
+          {
+            "label": "adminReleased",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:38"
+          },
+          {
+            "label": "totalSupply",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:40"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)24_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)34_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)24_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:61",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "d5948fc6662da81c3a1c266d0e4235f7582cc761372df4632a5ccfe693cb4998": {
+      "address": "0xEaAF7Fb8C88e93B62257E3aBACb9Fa34cAa4392F",
+      "txHash": "0x5e9565017047a059237b713151db60a64768e738198b697310431ea8c6fb739f",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "token20Address",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:22"
+          },
+          {
+            "label": "vestingPercentage",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:25"
+          },
+          {
+            "label": "vestingDuration",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:26"
+          },
+          {
+            "label": "secondsPerMonth",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:27"
+          },
+          {
+            "label": "totalVestingAmount",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:30"
+          },
+          {
+            "label": "vestingStartTime",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:31"
+          },
+          {
+            "label": "totalReleased",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:32"
+          },
+          {
+            "label": "monthlyReleaseAmount",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:33"
+          },
+          {
+            "label": "admin",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_address",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:36"
+          },
+          {
+            "label": "adminShare",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:37"
+          },
+          {
+            "label": "adminReleased",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:38"
+          },
+          {
+            "label": "totalSupply",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Foundation_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_Foundation_Vesting.sol:40"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)24_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)34_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)24_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:61",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "4b988a48b0fc16ca13eb5f5bc1728bb40f63c65116afb0567c9af743ddba605e": {
+      "address": "0xf5f15C0165A4a871a6dD2280cA4689B6bFAd015c",
+      "txHash": "0x4ed2f5d4809f1809b3f0b23c413ee7b93c420d1a8c255a1f11d295381317aaf9",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "token20Address",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:22"
+          },
+          {
+            "label": "vestingPercentage",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:25"
+          },
+          {
+            "label": "vestingDuration",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:26"
+          },
+          {
+            "label": "secondsPerMonth",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:27"
+          },
+          {
+            "label": "totalVestingAmount",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:30"
+          },
+          {
+            "label": "vestingStartTime",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:31"
+          },
+          {
+            "label": "totalReleased",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:32"
+          },
+          {
+            "label": "monthlyReleaseAmount",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:33"
+          },
+          {
+            "label": "admin",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_address",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:36"
+          },
+          {
+            "label": "adminShare",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:37"
+          },
+          {
+            "label": "adminReleased",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:38"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)24_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)34_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)24_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:61",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "ab133783547ac20874e5dcf1ccf796c9d52067665b0685ef91b1d4a997a88775": {
+      "address": "0xB188c40b47Fc2aa1c1D8c77751FB0427ca9374c3",
+      "txHash": "0xa0097dd70b6215f0205d3470d8eb3dce382d1ed8f44b12ae38fe4cdcf77d0794",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "token20Address",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:22"
+          },
+          {
+            "label": "vestingPercentage",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:25"
+          },
+          {
+            "label": "vestingDuration",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:26"
+          },
+          {
+            "label": "secondsPerMonth",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:27"
+          },
+          {
+            "label": "totalVestingAmount",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:30"
+          },
+          {
+            "label": "vestingStartTime",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:31"
+          },
+          {
+            "label": "totalReleased",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:32"
+          },
+          {
+            "label": "monthlyReleaseAmount",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:33"
+          },
+          {
+            "label": "admin",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_address",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:36"
+          },
+          {
+            "label": "adminShare",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:37"
+          },
+          {
+            "label": "adminReleased",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "HyperAGI_CoreTeam_Vesting_Dev_Test",
+            "src": "contracts\\finance\\HyperAGI_CoreTeam_Vesting.sol:38"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)24_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)34_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)231_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)164_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)24_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)24_storage)",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\AccessControlUpgradeable.sol:61",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
           "erc7201:openzeppelin.storage.Ownable": [
             {
               "contract": "OwnableUpgradeable",
