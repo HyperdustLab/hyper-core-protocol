@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -149,5 +152,53 @@ contract HyperAGI_AgentWallet is OwnableUpgradeable, AccessControlUpgradeable {
         _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
 
         _GPUMiningRateInterval = 4 * _GPUMiningReleaseInterval;
+    }
+
+    // ==================== Data Migration Getter Functions ====================
+    // These functions are added to support data migration to new contract
+
+    /**
+     * @dev Get all private storage variables for migration
+     * @return GPUMiningCurrMiningRatio Current mining ratio
+     * @return GPUMiningCurrYearTotalSupply Current year total supply
+     * @return GPUMiningCurrYearTotalAward Current year total award
+     * @return GPUMiningReleaseInterval Release interval
+     * @return GPUMiningRateInterval Rate interval
+     * @return GPUMiningAllowReleaseTime Allow release time
+     * @return lastGPUMiningRateTime Last GPU mining rate time
+     */
+    function getMigrationData() public view returns (uint256 GPUMiningCurrMiningRatio, uint256 GPUMiningCurrYearTotalSupply, uint256 GPUMiningCurrYearTotalAward, uint256 GPUMiningReleaseInterval, uint256 GPUMiningRateInterval, uint256 GPUMiningAllowReleaseTime, uint256 lastGPUMiningRateTime) {
+        return (_GPUMiningCurrMiningRatio, _GPUMiningCurrYearTotalSupply, _GPUMiningCurrYearTotalAward, _GPUMiningReleaseInterval, _GPUMiningRateInterval, _GPUMiningAllowReleaseTime, _lastGPUMiningRateTime);
+    }
+
+    /**
+     * @dev Get individual private variables
+     */
+    function getGPUMiningCurrMiningRatio() public view returns (uint256) {
+        return _GPUMiningCurrMiningRatio;
+    }
+
+    function getGPUMiningCurrYearTotalSupply() public view returns (uint256) {
+        return _GPUMiningCurrYearTotalSupply;
+    }
+
+    function getGPUMiningCurrYearTotalAward() public view returns (uint256) {
+        return _GPUMiningCurrYearTotalAward;
+    }
+
+    function getGPUMiningReleaseInterval() public view returns (uint256) {
+        return _GPUMiningReleaseInterval;
+    }
+
+    function getGPUMiningRateInterval() public view returns (uint256) {
+        return _GPUMiningRateInterval;
+    }
+
+    function getGPUMiningAllowReleaseTime() public view returns (uint256) {
+        return _GPUMiningAllowReleaseTime;
+    }
+
+    function getLastGPUMiningRateTime() public view returns (uint256) {
+        return _lastGPUMiningRateTime;
     }
 }
