@@ -1,44 +1,75 @@
-## The protocol used in the HyperAGI chain verifies GPU-based off-chain inference computations and distributes rewards ($HYPT) to AI inference miners and live embodied agents.
+# Hyperdust Protocol Smart Contracts
 
-![image](https://github.com/HyperdustLab/hyper-core-protocol/blob/main/how-it-works.png)
+The **Hyperdust Protocol** is composed of modular smart contracts, each handling a specific role in mining, governance, transactions, and token distribution within the HyperAGI ecosystem.
 
-Official Website : www.hyperagi.ai
-Social media : https://linktr.ee/hyperagi
+---
 
-### The details of token issurence and gas price update refer to
+## 🪙 Core Token & Wallet Contracts
+- **Hyperdust_Token.sol**  
+  The main token contract of the Hyperdust Protocol, defining the native token **HYPT**.
 
-https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
+- **Hyperdust_Wallet_Account.sol**  
+  Manages wallet accounts, holding Hyper gas fees on the L2 chain and generating detailed transaction records.
 
-#### Smart Contracts
+- **Hyperdust_VestingWallet.sol**  
+  Responsible for controlled release of tokens allocated for:
+  - Airdrop
+  - PublicSale
+  - PrivateSale
+  - Seed
+  - Advisor
+  - Foundation
+  - CoreTeam
 
-- `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
+---
 
-- `Hyperdust_Faucet.sol`: The faucet contract of the Hyperdust Protocol, from which users can obtain Hyperdust Tokens.
+## 🎁 Airdrop & Distribution Contracts
+- **Hyperdust_AirDrop.sol**  
+  Bulk airdrop contract for centralized token distribution.
 
-- `Hyperdust_Roles_Cfg.sol`: The role management contract of the Hyperdust Protocol, responsible for the determination of global administrator roles and the maintenance of administrator roles.
+- **Hyperdust_Faucet.sol**  
+  Faucet contract enabling users to claim small amounts of HYPT.
 
-- `Hyperdust_GYM_Space.sol`: The space contract of the Hyperdust Protocol, responsible for managing all Hyperspaces and generating a SID for each Hyperspace.
+- **Hyperdust_BaseReward_Release.sol**  
+  Handles periodic release of mined tokens to miners according to reward cycles.
 
-- `Hyperdust_Transaction_Cfg.sol`: The transaction configuration contract of the Hyperdust Protocol, responsible for storing the HYPT Gas costs for different sections and configuring the minimum GAS charge authorization.
+---
 
-- `Hyperdust_Wallet_Account.sol`: The wallet account contract of the Hyperdust Protocol, responsible for holding Hyper gas fees on the L2 chain and generating detailed records.
+## ⛏️ Mining & Node Management Contracts
+- **Hyperdust_Epoch_Awards.sol**  
+  The primary mining contract, distributing HYPT to miners for each epoch.
 
-- `Hyperdust_BaseReward_Release.sol`: The basic reward release contract for miners in the Hyperdust Protocol, responsible for releasing the basic reward tokens mined by miners according to a specified release cycle, through which miners collect released HYPT.
+- **Hyperdust_GPUMining.sol**  
+  Mining wallet contract for storing monthly mining token funds.
 
-- `Hyperdust_Epoch_Awards.sol`: The mining contract of the Hyperdust Protocol, through which miners earn HYPT tokens by mining.
+- **Hyperdust_Node_CheckIn.sol**  
+  On-chain miner registration verification.
 
-- `Hyperdust_Epoch_Transaction.sol`: The Hyperdust protocol's epoch transaction contract, where users initiate transactions on the epoch through this contract, utilizing the Hyperdust network's computing resources.
+- **Hyperdust_Node_Mgr.sol**  
+  Manages miner node information: status, online numbers, rendering workloads, etc.
 
-- `Hyperdust_Security_Deposit.sol`: The miner's security deposit contract of the Hyperdust Protocol, where 10% of the HYPT earned by miners from mining is stored as a quality guarantee deposit for miner services.
+- **Hyperdust_Node_Type.sol**  
+  Maintains miner type classifications and categories.
 
-- `Hyperdust_GPUMining.sol`: The mining wallet contract of the Hyperdust Protocol, responsible for storing the monthly mining token funds.
+- **Hyperdust_Security_Deposit.sol**  
+  Requires miners to deposit 10% of mined HYPT as a quality guarantee.
 
-- `Hyperdust_Token.sol`: The HYPT Token contract of the Hyperdust Protocol.
+---
 
-- `Hyperdust_VestingWallet.sol`: The wallet contract of the Hyperdust Protocol, responsible for the release of tokens for the Airdrop, PublicSale, PrivateSale, Seed, Advisor, Foundation, CoreTeam sections.
+## ⚙️ Transaction & Economic Configuration Contracts
+- **Hyperdust_Transaction_Cfg.sol**  
+  Stores gas cost configurations for different protocol modules and minimum gas authorization.
 
-- `Hyperdust_Node_CheckIn.sol`: The miner registration verification contract of the Hyperdust Protocol, responsible for the on-chain verification of miner registrations.
+- **Hyperdust_Epoch_Transaction.sol**  
+  Executes epoch-based transactions, leveraging Hyperdust computing resources.
 
-- `Hyperdust_Node_Mgr.sol`: The miner management contract of the Hyperdust Protocol, responsible for maintaining information, status, current online numbers, rendering numbers, and other maintenance tasks of miner nodes.
+---
 
-- `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information.
+## 🏛️ Governance & Role Management Contracts
+- **Hyperdust_Roles_Cfg.sol**  
+  Defines and maintains global administrator roles.
+
+- **Hyperdust_GYM_Space.sol**  
+  Manages Hyperspaces and generates unique **SID (Space Identifier)** for each.
+
+---
