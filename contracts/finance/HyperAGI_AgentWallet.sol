@@ -144,6 +144,19 @@ contract HyperAGI_AgentWallet is OwnableUpgradeable, AccessControlUpgradeable {
         recipient.transfer(amount);
     }
 
+    /**
+     * @dev Withdraw ETH from the contract to a specified address, only callable by the owner.
+     * @param recipient The recipient address
+     * @param amount The withdrawal amount
+     */
+    function withdraw(address payable recipient, uint256 amount) public onlyOwner {
+        require(recipient != address(0), "Invalid recipient address");
+        require(amount > 0, "Amount must be greater than 0");
+        require(address(this).balance >= amount, "Insufficient balance in contract");
+        (bool success, ) = recipient.call{value: amount}("");
+        require(success, "ETH transfer failed");
+    }
+
     function recalculateGPUMiningTotalAward() public onlyOwner {
         _GPUMiningTotalAward = (210000000 ether * 20) / 100;
         _GPUMiningCurrMiningRatio = 10 * 10 ** 18;

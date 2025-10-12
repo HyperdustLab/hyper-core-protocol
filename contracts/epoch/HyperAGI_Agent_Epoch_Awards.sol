@@ -22,7 +22,7 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 
 import "./../HyperAGI_Roles_Cfg.sol";
 import "./HyperAGI_BaseReward_Release.sol";
-import "./../finance/HyperAGI_AgentWallet.sol";
+import "./../finance/HyperAGI_AgentMining.sol";
 
 import "./../agent/HyperAGI_Agent.sol";
 import "./../HyperAGI_Wallet_Account.sol";
@@ -116,7 +116,7 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
         activeAgent = filteredActiveAgent;
         activeNumIndex = filteredCount;
 
-        HyperAGI_AgentWallet agentWalletAddress = HyperAGI_AgentWallet(payable(_agentWalletAddress));
+        HyperAGI_AgentMining agentWalletAddress = HyperAGI_AgentMining(payable(_agentWalletAddress));
         HyperAGI_BaseReward_Release baseRewardReleaseAddress = HyperAGI_BaseReward_Release(payable(_baseRewardReleaseAddress));
         HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
 
@@ -174,7 +174,7 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
         // Update agent counts in HyperAGI_Agent contract
         HyperAGI_Agent agentAddress = HyperAGI_Agent(payable(_agentAddress));
-        HyperAGI_AgentWallet agentWalletAddress = HyperAGI_AgentWallet(payable(_agentWalletAddress));
+        HyperAGI_AgentMining agentWalletAddress = HyperAGI_AgentMining(payable(_agentWalletAddress));
         HyperAGI_BaseReward_Release baseRewardReleaseAddress = HyperAGI_BaseReward_Release(payable(_baseRewardReleaseAddress));
         HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
 
