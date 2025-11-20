@@ -9,7 +9,7 @@ async function main() {
   console.log('Contract factory created successfully')
 
   // TODO: Please replace with actual proxy contract address
-  const proxyAddress = '0x17aA605a48bF951EfAff7a90F20a28dAb58d3Eb0' // Need to replace with actual address
+  const proxyAddress = '0x6096547Ec0eDF8EBE4b2eB461018B20b1201771d' // Need to replace with actual address
   console.log('Proxy contract address:', proxyAddress)
 
   const HyperAGI_Agent_Epoch_Payment = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_Agent_Epoch_Payment)

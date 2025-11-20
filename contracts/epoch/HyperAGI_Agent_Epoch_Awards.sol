@@ -182,8 +182,8 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
         uint256 epochAward = agentWalletAddress._epochAward();
 
-        if (_totalNum < 1000) {
-            _totalNum = 1000;
+        if (_totalNum < 20) {
+            _totalNum = 20;
         }
 
         agentAddress.setCounts(_totalNum, _activeAgentNum);
@@ -199,7 +199,9 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
             groundRodLevel = 5;
         }
 
-        uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(1, Math.mulDiv(_totalNum, 1, activeAgentLen));
+        _totalNum = 30;
+
+        uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(_activeAgentNum, _totalNum);
 
         emit eveDifficulty(_totalNum, _activeAgentNum);
 
