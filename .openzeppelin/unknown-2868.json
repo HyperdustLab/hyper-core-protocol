@@ -530,6 +530,16 @@
       "address": "0x574F5d09F48092C4528705fb69A702C153773369",
       "txHash": "0xcf5b63af3f73e5e8b9f1f20abe7a954361da896246386d8be3a6e41e7c2fb263",
       "kind": "transparent"
+    },
+    {
+      "address": "0x5543f34b7919E9247EbA9fc36151D1373c4a2291",
+      "txHash": "0x98423b87a2efb182a0e8755f4954699917587be4740467cf730d14a66511731a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0E4710191dA974B825d969283f1D141F06cc7576",
+      "txHash": "0x021548d9553ab7b8549ff60cbbd1ef2a477035188b5a4071eb6fe4f3f17a5414",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -29634,6 +29644,252 @@
             "type": "t_address",
             "contract": "HyperAGI_Employee_Contract",
             "src": "contracts\\office\\HyperAGI_Employee_Contract.sol:70"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)80_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)13_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "31bd3c9612616813c3e2920f6dc1e7c012387cb5a9b0990710cdaf73ee1108ed": {
+      "address": "0xD590FEa605638b1D11D9Fd2a77FA37E55d80D3dB",
+      "txHash": "0x7aad227a2a3a1b46721515cde39e2c783be092c7e127f1b8020ea7f94bdaf1d2",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:94"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:96"
+          },
+          {
+            "label": "_officeInfoAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:98"
+          },
+          {
+            "label": "_employeeContractAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:100"
+          },
+          {
+            "label": "_agentContractAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:102"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)80_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)13_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "6a8a63a4490d1d5069351957c0787a3bebd29db0b63512df7d18ed551591938c": {
+      "address": "0xAAA45189EC7A8bb6a8756472e4BA768B511bdD7b",
+      "txHash": "0x79890f89f85d381a0862353a4c14566db298656cb7e026bfbbe0ab350dcccd3d",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:94"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:96"
+          },
+          {
+            "label": "_officeInfoAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:98"
+          },
+          {
+            "label": "_employeeContractAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:100"
+          },
+          {
+            "label": "_agentContractAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "HyperAGI_Office_TaskReward",
+            "src": "contracts\\office\\HyperAGI_Office_TaskReward.sol:102"
           }
         ],
         "types": {
