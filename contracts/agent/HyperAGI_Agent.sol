@@ -356,6 +356,17 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveSaveAgent(sid);
     }
 
+    function mintV4(uint256 tokenId, string[] memory strParams, uint256 salary, string memory position) public payable {
+        IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
+        uint256 idBeforeMint = storageAddress.getNextId();
+
+        mintV3(tokenId, strParams);
+
+        uint256 id = idBeforeMint;
+        storageAddress.setUint(storageAddress.genKey("salary", id), salary);
+        storageAddress.setString(storageAddress.genKey("position", id), position);
+    }
+
     function update(bytes32 sid, string memory avatar, string memory nickName, string memory personalization) public {
         IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
         uint256 id = storageAddress.getBytes32Uint(sid);
@@ -383,6 +394,16 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         update(sid, strParams[0], strParams[1], strParams[2]);
 
         storageAddress.setString(storageAddress.genKey("welcomeMessage", id), strParams[3]);
+    }
+
+    function updateV4(bytes32 sid, string[] memory strParams, uint256 salary, string memory position) public {
+        updateV3(sid, strParams);
+
+        IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
+        uint256 id = storageAddress.getBytes32Uint(sid);
+        require(id > 0, "not found");
+        storageAddress.setUint(storageAddress.genKey("salary", id), salary);
+        storageAddress.setString(storageAddress.genKey("position", id), position);
     }
 
     function getAgent(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, uint256) {
@@ -447,6 +468,29 @@ contract HyperAGI_Agent is OwnableUpgradeable {
             walletAddress,
             storageAddress.getUint(storageAddress.genKey("timePeriodStart", id)),
             storageAddress.getUint(storageAddress.genKey("timePeriodEnd", id))
+        );
+    }
+
+    function getAgentV4(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, string memory, uint256, address, uint256, uint256, uint256, string memory) {
+        IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
+
+        uint256 id = storageAddress.getBytes32Uint(sid);
+
+        require(id > 0, "not found");
+
+        address walletAddress = storageAddress.getAddress(storageAddress.genKey("walletAddress", id));
+        return (
+            storageAddress.getUint(storageAddress.genKey("tokenId", id)),
+            storageAddress.getString(storageAddress.genKey("avatar", id)),
+            storageAddress.getString(storageAddress.genKey("nickName", id)),
+            storageAddress.getString(storageAddress.genKey("personalization", id)),
+            storageAddress.getString(storageAddress.genKey("welcomeMessage", id)),
+            storageAddress.getUint(storageAddress.genKey("groundRodLevel", id)),
+            walletAddress,
+            storageAddress.getUint(storageAddress.genKey("timePeriodStart", id)),
+            storageAddress.getUint(storageAddress.genKey("timePeriodEnd", id)),
+            storageAddress.getUint(storageAddress.genKey("salary", id)),
+            storageAddress.getString(storageAddress.genKey("position", id))
         );
     }
 

@@ -199,7 +199,7 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
             groundRodLevel = 5;
         }
 
-        _totalNum = 30;
+        _totalNum = 20;
 
         uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(_activeAgentNum, _totalNum);
 
