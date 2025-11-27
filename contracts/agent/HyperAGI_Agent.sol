@@ -209,7 +209,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         revert("not supported");
     }
 
-    function adminMintV3(uint256 tokenId, string[] memory strParams) public payable onlyAdmin {
+    function adminMintV3(uint256 tokenId, string[] memory strParams) public payable onlyAdmin returns (uint256) {
         IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
 
         address owner = IERC721(_agentPOPNFTAddress).ownerOf(tokenId);
@@ -262,6 +262,19 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveRechargeEnergy(sid, 1);
 
         emit eveSaveAgent(sid);
+
+        return id;
+    }
+
+    function adminMintV4(uint256 tokenId, string[] memory strParams, uint256 salary, string memory position) public payable onlyAdmin {
+        IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
+
+        // Call adminMintV3 which now returns the id it used
+        uint256 id = adminMintV3(tokenId, strParams);
+
+        // Use the id returned by adminMintV3 to set salary and position
+        storageAddress.setUint(storageAddress.genKey("salary", id), salary);
+        storageAddress.setString(storageAddress.genKey("position", id), position);
     }
 
     function bindWallet(bytes32 sid) public onlyAdmin {
@@ -299,7 +312,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         }
     }
 
-    function mintV3(uint256 tokenId, string[] memory strParams) public payable {
+    function mintV3(uint256 tokenId, string[] memory strParams) public payable returns (uint256) {
         // require(IERC721(_agentPOPNFTAddress).ownerOf(tokenId) == msg.sender, "not owner");
 
         address owner = IERC721(_agentPOPNFTAddress).ownerOf(tokenId);
@@ -354,15 +367,17 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveRechargeEnergy(sid, 1);
 
         emit eveSaveAgent(sid);
+
+        return id;
     }
 
     function mintV4(uint256 tokenId, string[] memory strParams, uint256 salary, string memory position) public payable {
         IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
-        uint256 idBeforeMint = storageAddress.getNextId();
 
-        mintV3(tokenId, strParams);
+        // Call mintV3 which now returns the id it used
+        uint256 id = mintV3(tokenId, strParams);
 
-        uint256 id = idBeforeMint;
+        // Use the id returned by mintV3 to set salary and position
         storageAddress.setUint(storageAddress.genKey("salary", id), salary);
         storageAddress.setString(storageAddress.genKey("position", id), position);
     }

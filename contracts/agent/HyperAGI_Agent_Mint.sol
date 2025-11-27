@@ -58,7 +58,29 @@ contract HyperAGI_Agent_Mint is OwnableUpgradeable {
         // Get mint info
         (, , uint256 price, address contractAddress, uint256 tokenId, bytes1 contractType, , uint256 allowNum, uint256 allowBuyNum) = HyperAGI_mNFT_Mint(_mNFTMintAddress).getMintInfo(id);
 
+        // Ensure the contract address matches the token address
+        require(contractAddress == _tokenAddress, "Contract address must match token address");
 
+        uint256 payAmount = price * 1;
+
+        // Verify exact ETH amount
+        require(msg.value == payAmount, "ETH amount must match exactly");
+
+        // Call mint function from mNFTMint contract with the ETH value
+        uint256[] memory tokenIds = HyperAGI_mNFT_Mint(_mNFTMintAddress).mintWithReturnTokenIdV2{value: payAmount}(id, 1, msg.sender);
+
+        // Create agent with the minted token
+        Agent.HyperAGI_Agent(payable(_agentAddress)).mintV3(tokenIds[0], agentParams);
+
+        emit eveAgentCreated(tokenIds[0], keccak256(abi.encodePacked(block.timestamp, block.difficulty, id)));
+    }
+
+    function mintAndCreateAgentV2(uint256 id, string[] memory agentParams, uint256[] memory uintParams) public payable {
+        // Check if tokenAddress is set
+        require(_tokenAddress != address(0), "Token address not set");
+
+        // Get mint info
+        (, , uint256 price, address contractAddress, uint256 tokenId, bytes1 contractType, , uint256 allowNum, uint256 allowBuyNum) = HyperAGI_mNFT_Mint(_mNFTMintAddress).getMintInfo(id);
 
         // Ensure the contract address matches the token address
         require(contractAddress == _tokenAddress, "Contract address must match token address");
@@ -71,10 +93,14 @@ contract HyperAGI_Agent_Mint is OwnableUpgradeable {
         // Call mint function from mNFTMint contract with the ETH value
         uint256[] memory tokenIds = HyperAGI_mNFT_Mint(_mNFTMintAddress).mintWithReturnTokenIdV2{value: payAmount}(id, 1, msg.sender);
 
+        // Extract salary from uintParams array and position from agentParams
+        require(uintParams.length > 0, "salary required");
+        require(agentParams.length > 4, "position required");
+        uint256 salary = uintParams[0];
+        string memory position = agentParams[4];
 
-        // Create agent with the minted token
-        Agent.HyperAGI_Agent(payable(_agentAddress)).mintV3(tokenIds[0], agentParams);
-    
+        // Create agent with the minted token using mintV4 which supports salary and position
+        Agent.HyperAGI_Agent(payable(_agentAddress)).mintV4(tokenIds[0], agentParams, salary, position);
 
         emit eveAgentCreated(tokenIds[0], keccak256(abi.encodePacked(block.timestamp, block.difficulty, id)));
     }

@@ -5,7 +5,7 @@ import { ethers, run, upgrades } from 'hardhat'
 async function main() {
   const _HyperAGI_Agent_Mint = await ethers.getContractFactory('HyperAGI_Agent_Mint')
 
-  const HyperAGI_Agent_Mint = await upgrades.upgradeProxy('0x7846E507378B94aE8FF28D454b563E35a4D1d81d', _HyperAGI_Agent_Mint)
+  const HyperAGI_Agent_Mint = await upgrades.upgradeProxy('0x7C853Cc719779c430032a9C70B1Cf47dbb3De105', _HyperAGI_Agent_Mint)
 
   // Verify implementation contract
   const implementationAddress = await upgrades.erc1967.getImplementationAddress(HyperAGI_Agent_Mint.target as string)
