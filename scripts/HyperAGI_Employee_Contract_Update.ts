@@ -8,7 +8,7 @@ async function main() {
   const _HyperAGI_Employee_Contract = await ethers.getContractFactory('HyperAGI_Employee_Contract')
   console.log('Contract factory created successfully')
 
-  const proxyAddress = '0x88f89323d03618181744d0e9f99969B73b91d3e6' // TODO: 替换为实际的代理地址
+  const proxyAddress = '0x574F5d09F48092C4528705fb69A702C153773369' // TODO: 替换为实际的代理地址
   console.log('Proxy contract address:', proxyAddress)
 
   const HyperAGI_Employee_Contract = await upgrades.upgradeProxy(proxyAddress, _HyperAGI_Employee_Contract)

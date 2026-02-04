@@ -59,6 +59,11 @@ abstract contract IHyperAGI_Office_Info {
     function getById(uint256 id) public view virtual returns (string memory officeName, address officeOwner, bytes32 spaceSid);
 }
 
+// Simplified Agent abstract contract - only includes used functionality
+abstract contract IHyperAGI_Agent {
+    function getAgentV4(bytes32 sid) public view virtual returns (uint256, string memory, string memory, string memory, string memory, uint256, address, uint256, uint256, uint256, string memory);
+}
+
 contract HyperAGI_Employee_Contract is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
@@ -68,6 +73,8 @@ contract HyperAGI_Employee_Contract is OwnableUpgradeable {
     address public _rolesCfgAddress;
 
     address public _officeInfoAddress;
+
+    address public _agentAddress;
 
     event eveSaveContract(uint256 id);
 
@@ -95,10 +102,17 @@ contract HyperAGI_Employee_Contract is OwnableUpgradeable {
         _officeInfoAddress = officeInfoAddress;
     }
 
+    function setAgentAddress(address agentAddress) public onlyOwner {
+        _agentAddress = agentAddress;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _storageAddress = contractaddressArray[0];
         _rolesCfgAddress = contractaddressArray[1];
         _officeInfoAddress = contractaddressArray[2];
+        if (contractaddressArray.length > 3) {
+            _agentAddress = contractaddressArray[3];
+        }
     }
 
     /**
@@ -121,6 +135,15 @@ contract HyperAGI_Employee_Contract is OwnableUpgradeable {
         require(officeOwner == msg.sender, "only office owner can create contract");
 
         IHyperAGI_Storage storageAddress = IHyperAGI_Storage(_storageAddress);
+
+        // Check if there's an existing active contract for this officeId and employee
+        bytes32 compositeKey = keccak256(abi.encodePacked(officeId, employee));
+        uint256 existingContractId = storageAddress.getBytes32Uint(compositeKey);
+        if (existingContractId > 0) {
+            uint256 contractStatus = storageAddress.getUint(storageAddress.genKey("contractStatus", existingContractId));
+            require(contractStatus == 1, "contract already exists, must terminate first");
+        }
+
         id = storageAddress.getNextId();
 
         storageAddress.setUint(storageAddress.genKey("officeId", id), officeId);
@@ -135,6 +158,9 @@ contract HyperAGI_Employee_Contract is OwnableUpgradeable {
         storageAddress.setAddress(storageAddress.genKey("contractCreator", id), msg.sender);
         storageAddress.setUint(storageAddress.genKey("contractStatus", id), 0); // 0 = 正常, 1 = 解雇
 
+        // Store the composite key mapping for officeId + employee
+        storageAddress.setBytes32Uint(compositeKey, id);
+
         emit eveSaveContract(id);
 
         return id;
@@ -147,7 +173,7 @@ contract HyperAGI_Employee_Contract is OwnableUpgradeable {
      * @return employee The employee identifier (bytes32)
      * @return position The position/job title
      * @return skills The skills direction
-     * @return salary The salary amount per week
+     * @return salary The salary amount per week (from agent contract if available)
      * @return settlementCycle The settlement cycle description
      * @return paymentMethod The payment method description
      * @return remarks Additional remarks
@@ -166,7 +192,12 @@ contract HyperAGI_Employee_Contract is OwnableUpgradeable {
         employee = storageAddress.getBytes32(storageAddress.genKey("employee", id));
         position = storageAddress.getString(storageAddress.genKey("position", id));
         skills = storageAddress.getString(storageAddress.genKey("skills", id));
-        salary = storageAddress.getUint(storageAddress.genKey("salary", id));
+
+        // Get salary from agent contract
+        require(_agentAddress != address(0), "agent address not set");
+        IHyperAGI_Agent agent = IHyperAGI_Agent(_agentAddress);
+        (, , , , , , , , , salary, ) = agent.getAgentV4(employee);
+
         settlementCycle = storageAddress.getString(storageAddress.genKey("settlementCycle", id));
         paymentMethod = storageAddress.getString(storageAddress.genKey("paymentMethod", id));
         remarks = storageAddress.getString(storageAddress.genKey("remarks", id));
@@ -200,6 +231,11 @@ contract HyperAGI_Employee_Contract is OwnableUpgradeable {
         require(officeOwner == msg.sender, "only office owner can terminate contract");
 
         storageAddress.setUint(storageAddress.genKey("contractStatus", id), 1); // 1 = 解雇
+
+        // Clear the composite key mapping to allow re-contracting after termination
+        bytes32 employee = storageAddress.getBytes32(storageAddress.genKey("employee", id));
+        bytes32 compositeKey = keccak256(abi.encodePacked(officeId, employee));
+        storageAddress.setBytes32Uint(compositeKey, 0);
 
         emit eveSaveContract(id);
     }
